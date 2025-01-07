@@ -3,11 +3,12 @@
 import React, { useEffect, useState } from "react";
 import axios from "../services/api";
 import Menu from "./Menu"; // Importar el componente de menú
-import { useNavigate } from "react-router-dom";
+import { useRouter } from "next/navigation";
 
 const ListaActividades = () => {
     const [eventos, setEventos] = useState([]);
     const [editEvento, setEditEvento] = useState(null);
+    const router = useRouter();
 
     useEffect(() => {
         const fetchEventos = async () => {

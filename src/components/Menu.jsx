@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import Link from "next/link";
 import "./Menu.css"; // Importar los estilos del menú
 
 const Menu = () => {
@@ -16,7 +16,7 @@ const Menu = () => {
             </div>
             {isOpen && (
                 <div className="menu-dropdown">
-                    <Link to="/registro" onClick={toggleMenu}>Registrar Actividad</Link>
+                    <Link href="/registro" onClick={toggleMenu}>Registrar Actividad</Link>
                 </div>
             )}
         </div>
