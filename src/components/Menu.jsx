@@ -1,5 +1,7 @@
+"use client";
+
 import React, { useState } from "react";
-import Link from "next/link";
+import NextLink from "next/link";
 import {
   Drawer,
   List,
@@ -24,6 +26,8 @@ const Menu = () => {
     setIsOpen(open);
   };
 
+  const menuItems = [{ text: "Registrar Actividad", href: "/registro" }];
+
   const list = () => (
     <Box
       sx={{ width: 250 }}
@@ -32,9 +36,15 @@ const Menu = () => {
       onKeyDown={toggleDrawer(false)}
     >
       <List>
-        <ListItem button component={Link} href="/registro">
-          <ListItemText primary="Registrar Actividad" />
-        </ListItem>
+        {menuItems.map((item, index) => (
+          <ListItem
+            component={NextLink}
+            href={item.href}
+            key={index}
+          >
+            <ListItemText primary={item.text} />
+          </ListItem>
+        ))}
       </List>
     </Box>
   );
@@ -49,8 +59,15 @@ const Menu = () => {
       >
         <MenuIcon />
       </IconButton>
-      <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
-        <Typography variant="h6" sx={{ padding: 2 }}>
+      <Drawer
+        anchor="left"
+        open={isOpen}
+        onClose={toggleDrawer(false)}
+      >
+        <Typography
+          variant="h6"
+          sx={{ padding: 2 }}
+        >
           Menú
         </Typography>
         {list()}
