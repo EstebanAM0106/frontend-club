@@ -1,3 +1,4 @@
-export default function Home (){
-    return (<div>Registrar</div>)
+import Registro from "../../components/Registro";
+export default function Home() {
+  return <Registro></Registro>;
 }
