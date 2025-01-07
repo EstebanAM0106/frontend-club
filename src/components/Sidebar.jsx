@@ -13,15 +13,9 @@ import {
   ListItemButton,
   ListItemIcon,
 } from "@mui/material";
-import {
-  Assignment,
-  Edit,
-  Login,
-  Menu as MenuIcon,
-  Close,
-} from "@mui/icons-material";
+import { Assignment, Edit, Login, Menu, Close } from "@mui/icons-material";
 
-const Menu = () => {
+const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDrawer = (open) => (event) => {
@@ -88,7 +82,7 @@ const Menu = () => {
         aria-label="menu"
         onClick={toggleDrawer(true)}
       >
-        <MenuIcon />
+        <Menu />
       </IconButton>
       <Drawer
         anchor="left"
@@ -120,4 +114,4 @@ const Menu = () => {
   );
 };
 
-export default Menu;
+export default Sidebar;
