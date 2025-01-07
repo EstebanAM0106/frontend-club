@@ -7,7 +7,7 @@ import {
   Box,
   Button,
   Container,
-  Grid,
+  Grid2,
   Paper,
   TextField,
   Typography,
@@ -119,14 +119,13 @@ const ListaActividades = () => {
             </Alert>
           )}
           {!error && (
-            <Grid
+            <Grid2
               container
               spacing={2}
             >
               {eventos.length > 0 ? (
                 eventos.map((evento) => (
-                  <Grid
-                    item
+                  <Grid2
                     xs={12}
                     sm={6}
                     md={4}
@@ -167,12 +166,12 @@ const ListaActividades = () => {
                         Editar
                       </Button>
                     </Paper>
-                  </Grid>
+                  </Grid2>
                 ))
               ) : (
                 <Typography>No hay eventos registrados.</Typography>
               )}
-            </Grid>
+            </Grid2>
           )}
           {editEvento && (
             <Box
@@ -186,14 +185,11 @@ const ListaActividades = () => {
               >
                 Editar Evento
               </Typography>
-              <Grid
+              <Grid2
                 container
                 spacing={2}
               >
-                <Grid
-                  item
-                  xs={12}
-                >
+                <Grid2 xs={12}>
                   <TextField
                     fullWidth
                     label="Nombre del evento"
@@ -202,9 +198,8 @@ const ListaActividades = () => {
                     onChange={handleEditChange}
                     required
                   />
-                </Grid>
-                <Grid
-                  item
+                </Grid2>
+                <Grid2
                   xs={12}
                   sm={6}
                 >
@@ -218,9 +213,8 @@ const ListaActividades = () => {
                     required
                     InputLabelProps={{ shrink: true }}
                   />
-                </Grid>
-                <Grid
-                  item
+                </Grid2>
+                <Grid2
                   xs={12}
                   sm={6}
                 >
@@ -234,9 +228,8 @@ const ListaActividades = () => {
                     required
                     InputLabelProps={{ shrink: true }}
                   />
-                </Grid>
-                <Grid
-                  item
+                </Grid2>
+                <Grid2
                   xs={12}
                   sm={6}
                 >
@@ -250,9 +243,8 @@ const ListaActividades = () => {
                     required
                     InputLabelProps={{ shrink: true }}
                   />
-                </Grid>
-                <Grid
-                  item
+                </Grid2>
+                <Grid2
                   xs={12}
                   sm={6}
                 >
@@ -266,9 +258,8 @@ const ListaActividades = () => {
                     required
                     InputLabelProps={{ shrink: true }}
                   />
-                </Grid>
-                <Grid
-                  item
+                </Grid2>
+                <Grid2
                   xs={12}
                   sm={6}
                 >
@@ -282,9 +273,8 @@ const ListaActividades = () => {
                     required
                     InputLabelProps={{ shrink: true }}
                   />
-                </Grid>
-                <Grid
-                  item
+                </Grid2>
+                <Grid2
                   xs={12}
                   sm={6}
                 >
@@ -296,9 +286,8 @@ const ListaActividades = () => {
                     onChange={handleEditChange}
                     required
                   />
-                </Grid>
-                <Grid
-                  item
+                </Grid2>
+                <Grid2
                   xs={12}
                   sm={6}
                 >
@@ -311,11 +300,8 @@ const ListaActividades = () => {
                     onChange={handleEditChange}
                     required
                   />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                >
+                </Grid2>
+                <Grid2 xs={12}>
                   <TextField
                     fullWidth
                     multiline
@@ -325,11 +311,8 @@ const ListaActividades = () => {
                     value={editEvento.Requisitos}
                     onChange={handleEditChange}
                   />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                >
+                </Grid2>
+                <Grid2 xs={12}>
                   <TextField
                     fullWidth
                     multiline
@@ -339,11 +322,8 @@ const ListaActividades = () => {
                     value={editEvento.Reglas}
                     onChange={handleEditChange}
                   />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                >
+                </Grid2>
+                <Grid2 xs={12}>
                   <TextField
                     fullWidth
                     multiline
@@ -353,9 +333,8 @@ const ListaActividades = () => {
                     value={editEvento.Horarios}
                     onChange={handleEditChange}
                   />
-                </Grid>
-                <Grid
-                  item
+                </Grid2>
+                <Grid2
                   xs={12}
                   sm={6}
                 >
@@ -368,11 +347,8 @@ const ListaActividades = () => {
                     onChange={handleEditChange}
                     required
                   />
-                </Grid>
-                <Grid
-                  item
-                  xs={12}
-                >
+                </Grid2>
+                <Grid2 xs={12}>
                   <Button
                     type="submit"
                     variant="contained"
@@ -388,8 +364,8 @@ const ListaActividades = () => {
                   >
                     Cancelar
                   </Button>
-                </Grid>
-              </Grid>
+                </Grid2>
+              </Grid2>
             </Box>
           )}
         </>

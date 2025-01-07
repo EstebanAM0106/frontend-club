@@ -6,7 +6,7 @@ import {
   Box,
   Button,
   Container,
-  Grid,
+  Grid2,
   TextField,
   Typography,
 } from "@mui/material";
@@ -91,12 +91,26 @@ const Registro = () => {
 
   return (
     <Container>
-      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ mt: 4 }}
+      >
+        <Typography
+          variant="h4"
+          gutterBottom
+        >
           Registrar Evento
         </Typography>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
+        <Grid2
+          container
+          spacing={2}
+          columns={{
+            xs: 1,
+            sm: 2,
+          }}
+        >
+          <Grid2 size={2}>
             <TextField
               fullWidth
               label="Nombre del Evento"
@@ -107,8 +121,8 @@ const Registro = () => {
               error={!!errors.Nombre}
               helperText={errors.Nombre}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={1}>
             <TextField
               fullWidth
               type="date"
@@ -121,8 +135,8 @@ const Registro = () => {
               error={!!errors.Fecha_Convocatoria}
               helperText={errors.Fecha_Convocatoria}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={1}>
             <TextField
               fullWidth
               type="date"
@@ -135,8 +149,8 @@ const Registro = () => {
               error={!!errors.Fecha_Inicio_Inscripciones}
               helperText={errors.Fecha_Inicio_Inscripciones}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={1}>
             <TextField
               fullWidth
               type="date"
@@ -149,8 +163,8 @@ const Registro = () => {
               error={!!errors.Fecha_Cierre_Inscripciones}
               helperText={errors.Fecha_Cierre_Inscripciones}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={1}>
             <TextField
               fullWidth
               type="date"
@@ -163,8 +177,8 @@ const Registro = () => {
               error={!!errors.Fecha_Inicio}
               helperText={errors.Fecha_Inicio}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={1}>
             <TextField
               fullWidth
               type="date"
@@ -177,8 +191,8 @@ const Registro = () => {
               error={!!errors.Fecha_Fin}
               helperText={errors.Fecha_Fin}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={1}>
             <TextField
               fullWidth
               label="Modalidad"
@@ -189,8 +203,8 @@ const Registro = () => {
               error={!!errors.Modalidad}
               helperText={errors.Modalidad}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={1}>
             <TextField
               fullWidth
               type="number"
@@ -202,8 +216,8 @@ const Registro = () => {
               error={!!errors.Costo}
               helperText={errors.Costo}
             />
-          </Grid>
-          <Grid item xs={12}>
+          </Grid2>
+          <Grid2 size={2}>
             <TextField
               fullWidth
               multiline
@@ -215,8 +229,8 @@ const Registro = () => {
               error={!!errors.Requisitos}
               helperText={errors.Requisitos}
             />
-          </Grid>
-          <Grid item xs={12}>
+          </Grid2>
+          <Grid2 size={2}>
             <TextField
               fullWidth
               multiline
@@ -228,8 +242,8 @@ const Registro = () => {
               error={!!errors.Reglas}
               helperText={errors.Reglas}
             />
-          </Grid>
-          <Grid item xs={12}>
+          </Grid2>
+          <Grid2 size={2}>
             <TextField
               fullWidth
               multiline
@@ -241,8 +255,8 @@ const Registro = () => {
               error={!!errors.Horarios}
               helperText={errors.Horarios}
             />
-          </Grid>
-          <Grid item xs={12} sm={6}>
+          </Grid2>
+          <Grid2 size={1}>
             <TextField
               fullWidth
               type="number"
@@ -254,13 +268,17 @@ const Registro = () => {
               error={!!errors.ID_Sede}
               helperText={errors.ID_Sede}
             />
-          </Grid>
-          <Grid item xs={12}>
-            <Button type="submit" variant="contained" color="primary">
+          </Grid2>
+          <Grid2 size={2}>
+            <Button
+              type="submit"
+              variant="contained"
+              color="primary"
+            >
               Registrar
             </Button>
-          </Grid>
-        </Grid>
+          </Grid2>
+        </Grid2>
       </Box>
     </Container>
   );
