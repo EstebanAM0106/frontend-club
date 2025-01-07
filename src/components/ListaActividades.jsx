@@ -269,7 +269,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
           <Button
             type="submit"
             variant="contained"
-            color="primary"
+            color="secondary"
             sx={{ mr: 1 }}
           >
             Actualizar
@@ -368,7 +368,7 @@ const ListaActividades = () => {
   };
 
   return (
-    <Container>
+    <>
       <Typography
         variant="h4"
         gutterBottom
@@ -452,7 +452,7 @@ const ListaActividades = () => {
           </Button>
         </DialogActions>
       </Dialog>
-    </Container>
+    </>
   );
 };
 

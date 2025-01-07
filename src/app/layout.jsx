@@ -12,8 +12,7 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body>
         <MyThemeProvider>
-          <Navegacion />
-          {children}
+          <Navegacion>{children}</Navegacion>
         </MyThemeProvider>
       </body>
     </html>

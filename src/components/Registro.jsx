@@ -90,7 +90,7 @@ const Registro = () => {
   };
 
   return (
-    <Container>
+    <>
       <Box
         component="form"
         onSubmit={handleSubmit}
@@ -280,7 +280,7 @@ const Registro = () => {
           </Grid2>
         </Grid2>
       </Box>
-    </Container>
+    </>
   );
 };
 

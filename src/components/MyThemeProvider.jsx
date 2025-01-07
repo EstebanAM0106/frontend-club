@@ -5,6 +5,7 @@ import { AppRouterCacheProvider } from "@mui/material-nextjs/v15-appRouter";
 import { ThemeProvider, createTheme } from "@mui/material/styles";
 import CssBaseline from "@mui/material/CssBaseline";
 import { Geist, Geist_Mono } from "next/font/google";
+import { deepOrange, indigo } from "@mui/material/colors";
 
 // Importar las fuentes con las variables CSS
 const geistSans = Geist({
@@ -21,10 +22,10 @@ const geistMono = Geist_Mono({
 const customTheme = createTheme({
   palette: {
     primary: {
-      main: "#1976d2",
+      main: indigo[500], // Usando un tono de azul de Material UI
     },
     secondary: {
-      main: "#dc004e",
+      main: deepOrange[500], // Usando un tono de naranja de Material UI
     },
     background: {
       default: "#f5f5f5",
