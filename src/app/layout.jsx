@@ -1,4 +1,5 @@
 import MyThemeProvider from "@/components/MyThemeProvider";
+import Navegacion from "@/components/Navegacion";
 
 export const metadata = {
   title: "Club de Leones",
@@ -10,7 +11,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <MyThemeProvider>{children} </MyThemeProvider>
+        <MyThemeProvider>
+          <Navegacion />
+          {children}
+        </MyThemeProvider>
       </body>
     </html>
   );

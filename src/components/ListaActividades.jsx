@@ -2,7 +2,6 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "@/services/api";
-import Menu from "@/components/Menu";
 import {
   Box,
   Button,
@@ -370,7 +369,6 @@ const ListaActividades = () => {
 
   return (
     <Container>
-      <Menu />
       <Typography
         variant="h4"
         gutterBottom
