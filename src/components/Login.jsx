@@ -1,5 +1,8 @@
+"use client";
+
 import React, { useState } from "react";
 import axios from "@/services/api";
+import { TextField, Button, Container, Typography, Box } from "@mui/material";
 
 const Login = () => {
   const [credenciales, setCredenciales] = useState({ email: "", password: "" });
@@ -24,26 +27,50 @@ const Login = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Iniciar Sesión</h2>
-      <input
-        type="email"
-        name="email"
-        placeholder="Email"
-        value={credenciales.email}
-        onChange={handleChange}
-        required
-      />
-      <input
-        type="password"
-        name="password"
-        placeholder="Contraseña"
-        value={credenciales.password}
-        onChange={handleChange}
-        required
-      />
-      <button type="submit">Iniciar Sesión</button>
-    </form>
+    <Container maxWidth="sm">
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={{ mt: 3 }}
+      >
+        <Typography
+          variant="h4"
+          component="h2"
+          gutterBottom
+        >
+          Iniciar Sesión
+        </Typography>
+        <TextField
+          fullWidth
+          type="email"
+          name="email"
+          label="Email"
+          value={credenciales.email}
+          onChange={handleChange}
+          required
+          margin="normal"
+        />
+        <TextField
+          fullWidth
+          type="password"
+          name="password"
+          label="Contraseña"
+          value={credenciales.password}
+          onChange={handleChange}
+          required
+          margin="normal"
+        />
+        <Button
+          type="submit"
+          variant="contained"
+          color="primary"
+          fullWidth
+          sx={{ mt: 2 }}
+        >
+          Iniciar Sesión
+        </Button>
+      </Box>
+    </Container>
   );
 };
 

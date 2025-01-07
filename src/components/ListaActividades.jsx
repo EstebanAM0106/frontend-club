@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import axios from "@/services/api";
-import Menu from "@/components/Menu"; // Importar el componente de menú
+import Menu from "@/components/Menu";
 import {
   Box,
   Button,
@@ -12,89 +12,360 @@ import {
   TextField,
   Typography,
   Alert,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
 } from "@mui/material";
 
+// Componente para cada evento
+const EventCard = ({ evento, onDelete, onEdit }) => {
+  const formatDate = (dateString) => {
+    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
+    return new Date(dateString).toLocaleDateString("es-ES", options);
+  };
+
+  return (
+    <Paper
+      elevation={3}
+      sx={{ padding: 2 }}
+    >
+      <Typography variant="h6">{evento.Nombre}</Typography>
+      <Typography>
+        <strong>Convocatoria:</strong> {formatDate(evento.Fecha_Convocatoria)}
+      </Typography>
+      <Typography>
+        <strong>Inicio:</strong> {formatDate(evento.Fecha_Inicio)}
+      </Typography>
+      <Typography>
+        <strong>Fin:</strong> {formatDate(evento.Fecha_Fin)}
+      </Typography>
+      <Typography>
+        <strong>Modalidad:</strong> {evento.Modalidad}
+      </Typography>
+      <Typography>
+        <strong>Costo:</strong> ${evento.Costo}
+      </Typography>
+      <Typography>
+        <strong>Sede:</strong> {evento.SedeNombre}
+      </Typography>
+      <Box sx={{ mt: 2 }}>
+        <Button
+          variant="contained"
+          color="secondary"
+          onClick={() => onDelete(evento.ID_Evento)}
+          sx={{ mr: 1 }}
+        >
+          Eliminar
+        </Button>
+        <Button
+          variant="contained"
+          color="primary"
+          onClick={() => onEdit(evento)}
+        >
+          Editar
+        </Button>
+      </Box>
+    </Paper>
+  );
+};
+
+// Componente para el formulario de edición
+const EditEventForm = ({ evento, onCancel, onSave }) => {
+  const [formData, setFormData] = useState({ ...evento });
+
+  const handleChange = (e) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSave(formData);
+  };
+
+  return (
+    <Box
+      component="form"
+      onSubmit={handleSubmit}
+      sx={{ mt: 4 }}
+    >
+      <Typography
+        variant="h5"
+        gutterBottom
+      >
+        Editar Evento
+      </Typography>
+      <Grid2
+        container
+        spacing={2}
+      >
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            label="Nombre del Evento"
+            name="Nombre"
+            value={formData.Nombre}
+            onChange={handleChange}
+            required
+          />
+        </Grid2>
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            type="date"
+            label="Fecha de Convocatoria"
+            name="Fecha_Convocatoria"
+            value={formData.Fecha_Convocatoria}
+            onChange={handleChange}
+            required
+            slotProps={{ inputLabel: { shrink: true } }}
+          />
+        </Grid2>
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            type="date"
+            label="Inicio de Inscripciones"
+            name="Fecha_Inicio_Inscripciones"
+            value={formData.Fecha_Inicio_Inscripciones}
+            onChange={handleChange}
+            required
+            slotProps={{ inputLabel: { shrink: true } }}
+          />
+        </Grid2>
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            type="date"
+            label="Cierre de Inscripciones"
+            name="Fecha_Cierre_Inscripciones"
+            value={formData.Fecha_Cierre_Inscripciones}
+            onChange={handleChange}
+            required
+            slotProps={{ inputLabel: { shrink: true } }}
+          />
+        </Grid2>
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            type="date"
+            label="Fecha de Inicio"
+            name="Fecha_Inicio"
+            value={formData.Fecha_Inicio}
+            onChange={handleChange}
+            required
+            slotProps={{ inputLabel: { shrink: true } }}
+          />
+        </Grid2>
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            type="date"
+            label="Fecha de Fin"
+            name="Fecha_Fin"
+            value={formData.Fecha_Fin}
+            onChange={handleChange}
+            required
+            slotProps={{ inputLabel: { shrink: true } }}
+          />
+        </Grid2>
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            label="Modalidad"
+            name="Modalidad"
+            value={formData.Modalidad}
+            onChange={handleChange}
+            required
+          />
+        </Grid2>
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            type="number"
+            label="Costo"
+            name="Costo"
+            value={formData.Costo}
+            onChange={handleChange}
+            required
+          />
+        </Grid2>
+        <Grid2 xs={12}>
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            label="Requisitos"
+            name="Requisitos"
+            value={formData.Requisitos}
+            onChange={handleChange}
+          />
+        </Grid2>
+        <Grid2 xs={12}>
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            label="Reglas"
+            name="Reglas"
+            value={formData.Reglas}
+            onChange={handleChange}
+          />
+        </Grid2>
+        <Grid2 xs={12}>
+          <TextField
+            fullWidth
+            multiline
+            rows={3}
+            label="Horarios"
+            name="Horarios"
+            value={formData.Horarios}
+            onChange={handleChange}
+          />
+        </Grid2>
+        <Grid2
+          xs={12}
+          sm={6}
+        >
+          <TextField
+            fullWidth
+            type="number"
+            label="ID de la Sede"
+            name="ID_Sede"
+            value={formData.ID_Sede}
+            onChange={handleChange}
+            required
+          />
+        </Grid2>
+        <Grid2 xs={12}>
+          <Button
+            type="submit"
+            variant="contained"
+            color="primary"
+            sx={{ mr: 1 }}
+          >
+            Actualizar
+          </Button>
+          <Button
+            variant="outlined"
+            onClick={onCancel}
+          >
+            Cancelar
+          </Button>
+        </Grid2>
+      </Grid2>
+    </Box>
+  );
+};
+
+// Componente principal
 const ListaActividades = () => {
   const [eventos, setEventos] = useState([]);
   const [editEvento, setEditEvento] = useState(null);
-  const [error, setError] = useState(null); // Estado para manejar errores
-  const [loading, setLoading] = useState(true); // Estado para manejar la carga
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [deleteDialog, setDeleteDialog] = useState({ open: false, id: null });
 
   useEffect(() => {
     const fetchEventos = async () => {
       try {
         const response = await axios.get("/eventos");
         setEventos(response.data);
-        setError(null); // Resetear el error si la solicitud es exitosa
-      } catch (error) {
-        if (error.message === "Network Error") {
+        setError(null);
+      } catch (err) {
+        if (err.message === "Network Error") {
           setError("Error de red: No se pudo conectar con el servidor.");
-        } else if (error.response) {
-          // La respuesta fue hecha y el servidor respondió con un código de estado
+        } else if (err.response) {
           setError(
-            `Error ${error.response.status}: ${
-              error.response.data.message ||
+            `Error ${err.response.status}: ${
+              err.response.data.message ||
               "No se pudo obtener la lista de eventos."
             }`
           );
         } else {
-          // Algo pasó al configurar la solicitud que desencadenó un Error
           setError(
             "Ocurrió un error inesperado. Por favor, intenta nuevamente más tarde."
           );
         }
       } finally {
-        setLoading(false); // Finalizar la carga
+        setLoading(false);
       }
     };
 
     fetchEventos();
   }, []);
 
-  const eliminarEvento = async (id) => {
+  const handleDelete = (id) => {
+    setDeleteDialog({ open: true, id });
+  };
+
+  const confirmDelete = async () => {
+    const { id } = deleteDialog;
     try {
       await axios.delete(`/eventos/${id}`);
       setEventos(eventos.filter((evento) => evento.ID_Evento !== id));
       alert("Evento eliminado con éxito");
-    } catch (error) {
-      console.error("Error eliminando evento:", error);
+    } catch (err) {
+      console.error("Error eliminando evento:", err);
       setError("No se pudo eliminar el evento. Por favor, intenta nuevamente.");
+    } finally {
+      setDeleteDialog({ open: false, id: null });
     }
   };
 
-  const editarEvento = (evento) => {
+  const cancelDelete = () => {
+    setDeleteDialog({ open: false, id: null });
+  };
+
+  const handleEdit = (evento) => {
     setEditEvento(evento);
   };
 
-  const handleEditChange = (e) => {
-    setEditEvento({
-      ...editEvento,
-      [e.target.name]: e.target.value,
-    });
-  };
-
-  const handleEditSubmit = async (e) => {
-    e.preventDefault();
+  const handleSaveEdit = async (updatedEvento) => {
     try {
-      await axios.put(`/eventos/${editEvento.ID_Evento}`, editEvento);
+      await axios.put(`/eventos/${updatedEvento.ID_Evento}`, updatedEvento);
       setEventos(
         eventos.map((evento) =>
-          evento.ID_Evento === editEvento.ID_Evento ? editEvento : evento
+          evento.ID_Evento === updatedEvento.ID_Evento ? updatedEvento : evento
         )
       );
       setEditEvento(null);
       alert("Evento actualizado con éxito");
-    } catch (error) {
-      console.error("Error actualizando evento:", error);
+    } catch (err) {
+      console.error("Error actualizando evento:", err);
       setError(
         "No se pudo actualizar el evento. Por favor, intenta nuevamente."
       );
     }
-  };
-
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(dateString).toLocaleDateString("es-ES", options);
   };
 
   return (
@@ -103,11 +374,14 @@ const ListaActividades = () => {
       <Typography
         variant="h4"
         gutterBottom
+        sx={{ mt: 2 }}
       >
         Lista de Eventos
       </Typography>
       {loading ? (
-        <Typography>Cargando eventos...</Typography>
+        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
+          <CircularProgress />
+        </Box>
       ) : (
         <>
           {error && (
@@ -131,245 +405,55 @@ const ListaActividades = () => {
                     md={4}
                     key={evento.ID_Evento}
                   >
-                    <Paper
-                      elevation={3}
-                      sx={{ padding: 2 }}
-                    >
-                      <Typography variant="h6">{evento.Nombre}</Typography>
-                      <Typography>
-                        Fecha de Convocatoria:{" "}
-                        {formatDate(evento.Fecha_Convocatoria)}
-                      </Typography>
-                      <Typography>
-                        Fecha de Inicio: {formatDate(evento.Fecha_Inicio)}
-                      </Typography>
-                      <Typography>
-                        Fecha de Fin: {formatDate(evento.Fecha_Fin)}
-                      </Typography>
-                      <Typography>Modalidad: {evento.Modalidad}</Typography>
-                      <Typography>Costo: {evento.Costo}</Typography>
-                      <Typography>Sede: {evento.SedeNombre}</Typography>
-                      <Button
-                        variant="contained"
-                        color="secondary"
-                        onClick={() => eliminarEvento(evento.ID_Evento)}
-                        sx={{ marginTop: 1 }}
-                      >
-                        Eliminar
-                      </Button>
-                      <Button
-                        variant="contained"
-                        color="primary"
-                        onClick={() => editarEvento(evento)}
-                        sx={{ marginTop: 1, marginLeft: 1 }}
-                      >
-                        Editar
-                      </Button>
-                    </Paper>
+                    <EventCard
+                      evento={evento}
+                      onDelete={handleDelete}
+                      onEdit={handleEdit}
+                    />
                   </Grid2>
                 ))
               ) : (
-                <Typography>No hay eventos registrados.</Typography>
+                <Grid2 xs={12}>
+                  <Typography>No hay eventos registrados.</Typography>
+                </Grid2>
               )}
             </Grid2>
           )}
           {editEvento && (
-            <Box
-              component="form"
-              onSubmit={handleEditSubmit}
-              sx={{ marginTop: 4 }}
-            >
-              <Typography
-                variant="h5"
-                gutterBottom
-              >
-                Editar Evento
-              </Typography>
-              <Grid2
-                container
-                spacing={2}
-              >
-                <Grid2 xs={12}>
-                  <TextField
-                    fullWidth
-                    label="Nombre del evento"
-                    name="Nombre"
-                    value={editEvento.Nombre}
-                    onChange={handleEditChange}
-                    required
-                  />
-                </Grid2>
-                <Grid2
-                  xs={12}
-                  sm={6}
-                >
-                  <TextField
-                    fullWidth
-                    type="date"
-                    label="Fecha de Convocatoria"
-                    name="Fecha_Convocatoria"
-                    value={editEvento.Fecha_Convocatoria}
-                    onChange={handleEditChange}
-                    required
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid2>
-                <Grid2
-                  xs={12}
-                  sm={6}
-                >
-                  <TextField
-                    fullWidth
-                    type="date"
-                    label="Fecha de Inicio de Inscripciones"
-                    name="Fecha_Inicio_Inscripciones"
-                    value={editEvento.Fecha_Inicio_Inscripciones}
-                    onChange={handleEditChange}
-                    required
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid2>
-                <Grid2
-                  xs={12}
-                  sm={6}
-                >
-                  <TextField
-                    fullWidth
-                    type="date"
-                    label="Fecha de Cierre de Inscripciones"
-                    name="Fecha_Cierre_Inscripciones"
-                    value={editEvento.Fecha_Cierre_Inscripciones}
-                    onChange={handleEditChange}
-                    required
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid2>
-                <Grid2
-                  xs={12}
-                  sm={6}
-                >
-                  <TextField
-                    fullWidth
-                    type="date"
-                    label="Fecha de Inicio"
-                    name="Fecha_Inicio"
-                    value={editEvento.Fecha_Inicio}
-                    onChange={handleEditChange}
-                    required
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid2>
-                <Grid2
-                  xs={12}
-                  sm={6}
-                >
-                  <TextField
-                    fullWidth
-                    type="date"
-                    label="Fecha de Fin"
-                    name="Fecha_Fin"
-                    value={editEvento.Fecha_Fin}
-                    onChange={handleEditChange}
-                    required
-                    InputLabelProps={{ shrink: true }}
-                  />
-                </Grid2>
-                <Grid2
-                  xs={12}
-                  sm={6}
-                >
-                  <TextField
-                    fullWidth
-                    label="Modalidad"
-                    name="Modalidad"
-                    value={editEvento.Modalidad}
-                    onChange={handleEditChange}
-                    required
-                  />
-                </Grid2>
-                <Grid2
-                  xs={12}
-                  sm={6}
-                >
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="Costo"
-                    name="Costo"
-                    value={editEvento.Costo}
-                    onChange={handleEditChange}
-                    required
-                  />
-                </Grid2>
-                <Grid2 xs={12}>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={4}
-                    label="Requisitos"
-                    name="Requisitos"
-                    value={editEvento.Requisitos}
-                    onChange={handleEditChange}
-                  />
-                </Grid2>
-                <Grid2 xs={12}>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={4}
-                    label="Reglas"
-                    name="Reglas"
-                    value={editEvento.Reglas}
-                    onChange={handleEditChange}
-                  />
-                </Grid2>
-                <Grid2 xs={12}>
-                  <TextField
-                    fullWidth
-                    multiline
-                    rows={4}
-                    label="Horarios"
-                    name="Horarios"
-                    value={editEvento.Horarios}
-                    onChange={handleEditChange}
-                  />
-                </Grid2>
-                <Grid2
-                  xs={12}
-                  sm={6}
-                >
-                  <TextField
-                    fullWidth
-                    type="number"
-                    label="ID de la Sede"
-                    name="ID_Sede"
-                    value={editEvento.ID_Sede}
-                    onChange={handleEditChange}
-                    required
-                  />
-                </Grid2>
-                <Grid2 xs={12}>
-                  <Button
-                    type="submit"
-                    variant="contained"
-                    color="primary"
-                    sx={{ marginRight: 1 }}
-                  >
-                    Actualizar
-                  </Button>
-                  <Button
-                    type="button"
-                    variant="outlined"
-                    onClick={() => setEditEvento(null)}
-                  >
-                    Cancelar
-                  </Button>
-                </Grid2>
-              </Grid2>
-            </Box>
+            <EditEventForm
+              evento={editEvento}
+              onCancel={() => setEditEvento(null)}
+              onSave={handleSaveEdit}
+            />
           )}
         </>
       )}
+      {/* Diálogo de confirmación para eliminación */}
+      <Dialog
+        open={deleteDialog.open}
+        onClose={cancelDelete}
+        aria-labelledby="confirm-delete-title"
+        aria-describedby="confirm-delete-description"
+      >
+        <DialogTitle id="confirm-delete-title">
+          Confirmar Eliminación
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="confirm-delete-description">
+            ¿Estás seguro de que deseas eliminar este evento? Esta acción no se
+            puede deshacer.
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={cancelDelete}>Cancelar</Button>
+          <Button
+            onClick={confirmDelete}
+            color="secondary"
+          >
+            Eliminar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Container>
   );
 };

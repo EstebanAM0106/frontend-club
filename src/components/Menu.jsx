@@ -10,8 +10,16 @@ import {
   IconButton,
   Box,
   Typography,
+  ListItemButton,
+  ListItemIcon,
 } from "@mui/material";
-import MenuIcon from "@mui/icons-material/Menu";
+import {
+  Assignment,
+  Edit,
+  Login,
+  Menu as MenuIcon,
+  Close,
+} from "@mui/icons-material";
 
 const Menu = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -26,11 +34,27 @@ const Menu = () => {
     setIsOpen(open);
   };
 
-  const menuItems = [{ text: "Registrar Actividad", href: "/registro" }];
+  const menuItems = [
+    {
+      text: "Ver actividades",
+      href: "/",
+      icon: <Assignment />,
+    },
+    {
+      text: "Registrar actividad",
+      href: "/registro",
+      icon: <Edit />,
+    },
+    {
+      text: "Iniciar sesión",
+      href: "/login",
+      icon: <Login />,
+    },
+  ];
 
   const list = () => (
     <Box
-      sx={{ width: 250 }}
+      sx={{ width: { xs: "100vw", sm: 300 } }}
       role="presentation"
       onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
@@ -38,11 +62,18 @@ const Menu = () => {
       <List>
         {menuItems.map((item, index) => (
           <ListItem
-            component={NextLink}
-            href={item.href}
             key={index}
+            sx={{
+              p: 0,
+            }}
           >
-            <ListItemText primary={item.text} />
+            <ListItemButton
+              component={NextLink}
+              href={item.href}
+            >
+              <ListItemText primary={item.text} />
+              <ListItemIcon>{item.icon}</ListItemIcon>
+            </ListItemButton>
           </ListItem>
         ))}
       </List>
@@ -64,12 +95,25 @@ const Menu = () => {
         open={isOpen}
         onClose={toggleDrawer(false)}
       >
-        <Typography
-          variant="h6"
-          sx={{ padding: 2 }}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            padding: 2,
+          }}
         >
-          Menú
-        </Typography>
+          <Typography variant="h5">Menú</Typography>
+          <IconButton
+            edge="end"
+            color="inherit"
+            aria-label="close"
+            onClick={toggleDrawer(false)}
+            sx={{ mr: 3, ml: "auto" }}
+          >
+            <Close />
+          </IconButton>
+        </Box>
         {list()}
       </Drawer>
     </div>
