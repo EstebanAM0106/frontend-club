@@ -1,26 +1,62 @@
 import React, { useState } from "react";
 import Link from "next/link";
-import "./Menu.css"; // Importar los estilos del menú
+import {
+  Drawer,
+  List,
+  ListItem,
+  ListItemText,
+  IconButton,
+  Box,
+  Typography,
+} from "@mui/material";
+import MenuIcon from "@mui/icons-material/Menu";
 
 const Menu = () => {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
 
-    const toggleMenu = () => {
-        setIsOpen(!isOpen);
-    };
+  const toggleDrawer = (open) => (event) => {
+    if (
+      event.type === "keydown" &&
+      (event.key === "Tab" || event.key === "Shift")
+    ) {
+      return;
+    }
+    setIsOpen(open);
+  };
 
-    return (
-        <div className="menu-container">
-            <div className="menu-icon" onClick={toggleMenu}>
-                &#9776; {/* Ícono de tres rayas horizontales */}
-            </div>
-            {isOpen && (
-                <div className="menu-dropdown">
-                    <Link href="/registro" onClick={toggleMenu}>Registrar Actividad</Link>
-                </div>
-            )}
-        </div>
-    );
+  const list = () => (
+    <Box
+      sx={{ width: 250 }}
+      role="presentation"
+      onClick={toggleDrawer(false)}
+      onKeyDown={toggleDrawer(false)}
+    >
+      <List>
+        <ListItem button component={Link} href="/registro">
+          <ListItemText primary="Registrar Actividad" />
+        </ListItem>
+      </List>
+    </Box>
+  );
+
+  return (
+    <div>
+      <IconButton
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        onClick={toggleDrawer(true)}
+      >
+        <MenuIcon />
+      </IconButton>
+      <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
+        <Typography variant="h6" sx={{ padding: 2 }}>
+          Menú
+        </Typography>
+        {list()}
+      </Drawer>
+    </div>
+  );
 };
 
 export default Menu;

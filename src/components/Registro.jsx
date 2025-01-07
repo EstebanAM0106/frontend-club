@@ -2,6 +2,14 @@
 
 import React, { useState } from "react";
 import axios from "@/services/api";
+import {
+  Box,
+  Button,
+  Container,
+  Grid,
+  TextField,
+  Typography,
+} from "@mui/material";
 
 const Registro = () => {
   const [evento, setEvento] = useState({
@@ -82,141 +90,179 @@ const Registro = () => {
   };
 
   return (
-    <form className="form-registro" onSubmit={handleSubmit}>
-      <h2>Registrar Evento</h2>
-      <label htmlFor="Nombre">Nombre del Evento</label>
-      <input
-        type="text"
-        name="Nombre"
-        id="Nombre"
-        placeholder="Nombre del evento"
-        value={evento.Nombre}
-        onChange={handleChange}
-        required
-      />
-      {errors.Nombre && <p className="error">{errors.Nombre}</p>}
-      <label htmlFor="Fecha_Convocatoria">Fecha de Convocatoria</label>
-      <input
-        type="date"
-        name="Fecha_Convocatoria"
-        id="Fecha_Convocatoria"
-        value={evento.Fecha_Convocatoria}
-        onChange={handleChange}
-        required
-      />
-      {errors.Fecha_Convocatoria && (
-        <p className="error">{errors.Fecha_Convocatoria}</p>
-      )}
-      <label htmlFor="Fecha_Inicio_Inscripciones">
-        Fecha de Inicio de Inscripciones
-      </label>
-      <input
-        type="date"
-        name="Fecha_Inicio_Inscripciones"
-        id="Fecha_Inicio_Inscripciones"
-        value={evento.Fecha_Inicio_Inscripciones}
-        onChange={handleChange}
-        required
-      />
-      {errors.Fecha_Inicio_Inscripciones && (
-        <p className="error">{errors.Fecha_Inicio_Inscripciones}</p>
-      )}
-      <label htmlFor="Fecha_Cierre_Inscripciones">
-        Fecha de Cierre de Inscripciones
-      </label>
-      <input
-        type="date"
-        name="Fecha_Cierre_Inscripciones"
-        id="Fecha_Cierre_Inscripciones"
-        value={evento.Fecha_Cierre_Inscripciones}
-        onChange={handleChange}
-        required
-      />
-      {errors.Fecha_Cierre_Inscripciones && (
-        <p className="error">{errors.Fecha_Cierre_Inscripciones}</p>
-      )}
-      <label htmlFor="Fecha_Inicio">Fecha de Inicio</label>
-      <input
-        type="date"
-        name="Fecha_Inicio"
-        id="Fecha_Inicio"
-        value={evento.Fecha_Inicio}
-        onChange={handleChange}
-        required
-      />
-      {errors.Fecha_Inicio && <p className="error">{errors.Fecha_Inicio}</p>}
-      <label htmlFor="Fecha_Fin">Fecha de Fin</label>
-      <input
-        type="date"
-        name="Fecha_Fin"
-        id="Fecha_Fin"
-        value={evento.Fecha_Fin}
-        onChange={handleChange}
-        required
-      />
-      {errors.Fecha_Fin && <p className="error">{errors.Fecha_Fin}</p>}
-      <label htmlFor="Modalidad">Modalidad</label>
-      <input
-        type="text"
-        name="Modalidad"
-        id="Modalidad"
-        placeholder="Modalidad"
-        value={evento.Modalidad}
-        onChange={handleChange}
-        required
-      />
-      {errors.Modalidad && <p className="error">{errors.Modalidad}</p>}
-      <label htmlFor="Costo">Costo</label>
-      <input
-        type="number"
-        name="Costo"
-        id="Costo"
-        placeholder="Costo"
-        value={evento.Costo}
-        onChange={handleChange}
-        required
-      />
-      {errors.Costo && <p className="error">{errors.Costo}</p>}
-      <label htmlFor="Requisitos">Requisitos</label>
-      <textarea
-        name="Requisitos"
-        id="Requisitos"
-        placeholder="Requisitos"
-        value={evento.Requisitos}
-        onChange={handleChange}
-      ></textarea>
-      {errors.Requisitos && <p className="error">{errors.Requisitos}</p>}
-      <label htmlFor="Reglas">Reglas</label>
-      <textarea
-        name="Reglas"
-        id="Reglas"
-        placeholder="Reglas"
-        value={evento.Reglas}
-        onChange={handleChange}
-      ></textarea>
-      {errors.Reglas && <p className="error">{errors.Reglas}</p>}
-      <label htmlFor="Horarios">Horarios</label>
-      <textarea
-        name="Horarios"
-        id="Horarios"
-        placeholder="Horarios"
-        value={evento.Horarios}
-        onChange={handleChange}
-      ></textarea>
-      {errors.Horarios && <p className="error">{errors.Horarios}</p>}
-      <label htmlFor="ID_Sede">ID de la Sede</label>
-      <input
-        type="number"
-        name="ID_Sede"
-        id="ID_Sede"
-        placeholder="ID de la Sede"
-        value={evento.ID_Sede}
-        onChange={handleChange}
-        required
-      />
-      {errors.ID_Sede && <p className="error">{errors.ID_Sede}</p>}
-      <button type="submit">Registrar</button>
-    </form>
+    <Container>
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Registrar Evento
+        </Typography>
+        <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              label="Nombre del Evento"
+              name="Nombre"
+              value={evento.Nombre}
+              onChange={handleChange}
+              required
+              error={!!errors.Nombre}
+              helperText={errors.Nombre}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Fecha de Convocatoria"
+              name="Fecha_Convocatoria"
+              value={evento.Fecha_Convocatoria}
+              onChange={handleChange}
+              required
+              InputLabelProps={{ shrink: true }}
+              error={!!errors.Fecha_Convocatoria}
+              helperText={errors.Fecha_Convocatoria}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Fecha de Inicio de Inscripciones"
+              name="Fecha_Inicio_Inscripciones"
+              value={evento.Fecha_Inicio_Inscripciones}
+              onChange={handleChange}
+              required
+              InputLabelProps={{ shrink: true }}
+              error={!!errors.Fecha_Inicio_Inscripciones}
+              helperText={errors.Fecha_Inicio_Inscripciones}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Fecha de Cierre de Inscripciones"
+              name="Fecha_Cierre_Inscripciones"
+              value={evento.Fecha_Cierre_Inscripciones}
+              onChange={handleChange}
+              required
+              InputLabelProps={{ shrink: true }}
+              error={!!errors.Fecha_Cierre_Inscripciones}
+              helperText={errors.Fecha_Cierre_Inscripciones}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Fecha de Inicio"
+              name="Fecha_Inicio"
+              value={evento.Fecha_Inicio}
+              onChange={handleChange}
+              required
+              InputLabelProps={{ shrink: true }}
+              error={!!errors.Fecha_Inicio}
+              helperText={errors.Fecha_Inicio}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="date"
+              label="Fecha de Fin"
+              name="Fecha_Fin"
+              value={evento.Fecha_Fin}
+              onChange={handleChange}
+              required
+              InputLabelProps={{ shrink: true }}
+              error={!!errors.Fecha_Fin}
+              helperText={errors.Fecha_Fin}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              label="Modalidad"
+              name="Modalidad"
+              value={evento.Modalidad}
+              onChange={handleChange}
+              required
+              error={!!errors.Modalidad}
+              helperText={errors.Modalidad}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="number"
+              label="Costo"
+              name="Costo"
+              value={evento.Costo}
+              onChange={handleChange}
+              required
+              error={!!errors.Costo}
+              helperText={errors.Costo}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              label="Requisitos"
+              name="Requisitos"
+              value={evento.Requisitos}
+              onChange={handleChange}
+              error={!!errors.Requisitos}
+              helperText={errors.Requisitos}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              label="Reglas"
+              name="Reglas"
+              value={evento.Reglas}
+              onChange={handleChange}
+              error={!!errors.Reglas}
+              helperText={errors.Reglas}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <TextField
+              fullWidth
+              multiline
+              rows={4}
+              label="Horarios"
+              name="Horarios"
+              value={evento.Horarios}
+              onChange={handleChange}
+              error={!!errors.Horarios}
+              helperText={errors.Horarios}
+            />
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <TextField
+              fullWidth
+              type="number"
+              label="ID de la Sede"
+              name="ID_Sede"
+              value={evento.ID_Sede}
+              onChange={handleChange}
+              required
+              error={!!errors.ID_Sede}
+              helperText={errors.ID_Sede}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <Button type="submit" variant="contained" color="primary">
+              Registrar
+            </Button>
+          </Grid>
+        </Grid>
+      </Box>
+    </Container>
   );
 };
 
