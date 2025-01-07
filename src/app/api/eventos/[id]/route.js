@@ -1,6 +1,6 @@
 // app/api/eventos/[id]/route.js
 
-import pool from '../../../../lib/db/connection';
+import pool from '@/lib/connection';
 import { NextResponse } from 'next/server';
 
 export async function PUT(request, { params }) {

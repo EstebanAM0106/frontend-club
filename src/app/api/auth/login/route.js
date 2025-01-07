@@ -1,6 +1,6 @@
 // app/api/auth/login/route.js
 
-import pool from '../../../../lib/db/connection';
+import pool from '@/lib/connection';
 import { NextResponse } from 'next/server';
 import jwt from 'jsonwebtoken';
 
