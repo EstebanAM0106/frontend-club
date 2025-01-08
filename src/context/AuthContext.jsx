@@ -13,18 +13,22 @@ export const AuthProvider = ({ children }) => {
     const token = localStorage.getItem("token");
     if (token) {
       // Aquí puedes agregar lógica para verificar el token y obtener el usuario
-      setUser({ role: "user" }); // Ejemplo: establecer el rol del usuario
+      const userData = JSON.parse(localStorage.getItem("userData"));
+      setUser(userData); // Establecer los datos del usuario, incluyendo el rol
     } else {
       router.push("/login");
     }
   }, [router]);
 
   const login = (userData) => {
+    localStorage.setItem("userData", JSON.stringify(userData)); // Guardar los datos del usuario en localStorage
     setUser(userData);
+    router.push("/"); // Redirigir a la lista de actividades después del inicio de sesión
   };
 
   const logout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userData");
     setUser(null);
     router.push("/login");
   };

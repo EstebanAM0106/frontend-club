@@ -1,11 +1,13 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "@/services/api";
 import { TextField, Button, Container, Typography, Box } from "@mui/material";
+import { AuthContext } from "@/context/AuthContext";
 
 const Login = () => {
   const [credenciales, setCredenciales] = useState({ email: "", password: "" });
+  const { login } = useContext(AuthContext);
 
   const handleChange = (e) => {
     setCredenciales({
@@ -19,6 +21,9 @@ const Login = () => {
     try {
       const response = await axios.post("/login", credenciales);
       localStorage.setItem("token", response.data.token); // Guardar el token en localStorage
+      const userData = response.data;
+      //const userData = { role: response.data.role };
+      login(userData); // Llamar a la función login con los datos del usuario
       alert("Inicio de sesión exitoso");
     } catch (error) {
       console.error("Error iniciando sesión:", error);
@@ -28,16 +33,8 @@ const Login = () => {
 
   return (
     <Container maxWidth="sm">
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{ mt: 3 }}
-      >
-        <Typography
-          variant="h4"
-          component="h2"
-          gutterBottom
-        >
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 3 }}>
+        <Typography variant="h4" component="h2" gutterBottom>
           Iniciar Sesión
         </Typography>
         <TextField

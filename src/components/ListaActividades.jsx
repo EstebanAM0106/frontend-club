@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import axios from "@/services/api";
 import {
   Box,
@@ -18,19 +18,17 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
+import { AuthContext } from "@/context/AuthContext";
 
 // Componente para cada evento
-const EventCard = ({ evento, onDelete, onEdit }) => {
+const EventCard = ({ evento, onDelete, onEdit, isAdmin }) => {
   const formatDate = (dateString) => {
     const options = { year: "numeric", month: "2-digit", day: "2-digit" };
     return new Date(dateString).toLocaleDateString("es-ES", options);
   };
 
   return (
-    <Paper
-      elevation={3}
-      sx={{ padding: 2 }}
-    >
+    <Paper elevation={3} sx={{ padding: 2 }}>
       <Typography variant="h6">{evento.Nombre}</Typography>
       <Typography>
         <strong>Convocatoria:</strong> {formatDate(evento.Fecha_Convocatoria)}
@@ -50,23 +48,25 @@ const EventCard = ({ evento, onDelete, onEdit }) => {
       <Typography>
         <strong>Sede:</strong> {evento.SedeNombre}
       </Typography>
-      <Box sx={{ mt: 2 }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => onDelete(evento.ID_Evento)}
-          sx={{ mr: 1 }}
-        >
-          Eliminar
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => onEdit(evento)}
-        >
-          Editar
-        </Button>
-      </Box>
+      {isAdmin && (
+        <Box sx={{ mt: 2 }}>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={() => onDelete(evento.ID_Evento)}
+            sx={{ mr: 1 }}
+          >
+            Eliminar
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => onEdit(evento)}
+          >
+            Editar
+          </Button>
+        </Box>
+      )}
     </Paper>
   );
 };
@@ -88,25 +88,12 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={{ mt: 4 }}
-    >
-      <Typography
-        variant="h5"
-        gutterBottom
-      >
+    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
+      <Typography variant="h5" gutterBottom>
         Editar Evento
       </Typography>
-      <Grid2
-        container
-        spacing={2}
-      >
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+      <Grid2 container spacing={2}>
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             label="Nombre del Evento"
@@ -116,10 +103,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
             required
           />
         </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             type="date"
@@ -131,10 +115,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
             slotProps={{ inputLabel: { shrink: true } }}
           />
         </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             type="date"
@@ -146,10 +127,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
             slotProps={{ inputLabel: { shrink: true } }}
           />
         </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             type="date"
@@ -161,10 +139,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
             slotProps={{ inputLabel: { shrink: true } }}
           />
         </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             type="date"
@@ -176,10 +151,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
             slotProps={{ inputLabel: { shrink: true } }}
           />
         </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             type="date"
@@ -191,10 +163,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
             slotProps={{ inputLabel: { shrink: true } }}
           />
         </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             label="Modalidad"
@@ -204,10 +173,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
             required
           />
         </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             type="number"
@@ -251,10 +217,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
             onChange={handleChange}
           />
         </Grid2>
-        <Grid2
-          xs={12}
-          sm={6}
-        >
+        <Grid2 xs={12} sm={6}>
           <TextField
             fullWidth
             type="number"
@@ -274,10 +237,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
           >
             Actualizar
           </Button>
-          <Button
-            variant="outlined"
-            onClick={onCancel}
-          >
+          <Button variant="outlined" onClick={onCancel}>
             Cancelar
           </Button>
         </Grid2>
@@ -288,6 +248,7 @@ const EditEventForm = ({ evento, onCancel, onSave }) => {
 
 // Componente principal
 const ListaActividades = () => {
+  const { user } = useContext(AuthContext);
   const [eventos, setEventos] = useState([]);
   const [editEvento, setEditEvento] = useState(null);
   const [error, setError] = useState(null);
@@ -369,12 +330,8 @@ const ListaActividades = () => {
 
   return (
     <>
-      <Typography
-        variant="h4"
-        gutterBottom
-        sx={{ mt: 2 }}
-      >
-        Lista de Eventos
+      <Typography variant="h4" gutterBottom sx={{ mt: 2 }}>
+        Lista de Eventos {JSON.stringify(user.user.email)}
       </Typography>
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
@@ -383,30 +340,20 @@ const ListaActividades = () => {
       ) : (
         <>
           {error && (
-            <Alert
-              severity="error"
-              sx={{ mb: 2 }}
-            >
+            <Alert severity="error" sx={{ mb: 2 }}>
               {error}
             </Alert>
           )}
           {!error && (
-            <Grid2
-              container
-              spacing={2}
-            >
+            <Grid2 container spacing={2}>
               {eventos.length > 0 ? (
                 eventos.map((evento) => (
-                  <Grid2
-                    xs={12}
-                    sm={6}
-                    md={4}
-                    key={evento.ID_Evento}
-                  >
+                  <Grid2 xs={12} sm={6} md={4} key={evento.ID_Evento}>
                     <EventCard
                       evento={evento}
                       onDelete={handleDelete}
                       onEdit={handleEdit}
+                      isAdmin={user.user.role === "admin"}
                     />
                   </Grid2>
                 ))
@@ -444,10 +391,7 @@ const ListaActividades = () => {
         </DialogContent>
         <DialogActions>
           <Button onClick={cancelDelete}>Cancelar</Button>
-          <Button
-            onClick={confirmDelete}
-            color="secondary"
-          >
+          <Button onClick={confirmDelete} color="secondary">
             Eliminar
           </Button>
         </DialogActions>
