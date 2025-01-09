@@ -1,9 +1,12 @@
-import React from "react";
+import React, { useContext } from "react";
 import NextLink from "next/link";
 import { AppBar, Container, Toolbar, Typography, Button } from "@mui/material";
 import Sidebar from "@/components/Sidebar";
+import { AuthContext } from "@/context/AuthContext";
 
 export default function Navegacion({ children }) {
+  const { logout } = useContext(AuthContext);
+
   return (
     <>
       <AppBar position="fixed">
@@ -14,20 +17,19 @@ export default function Navegacion({ children }) {
           <Typography
             variant="h6"
             sx={{ flexGrow: 1, textDecoration: "none", color: "inherit" }}
-            //component={NextLink}
-            //href={"/"}
+            component={NextLink}
+            href={"/"}
           >
             Club de Leones
           </Typography>
-          {/* Botón de Iniciar Sesión */}
+          {/* Botón de Cerrar Sesión */}
           <Button
-            component={NextLink}
-            href="/login"
+            onClick={logout}
             color="inherit"
             variant="outlined"
             sx={{ ml: 2 }}
           >
-            Iniciar Sesión
+            Cerrar Sesión
           </Button>
         </Toolbar>
       </AppBar>
