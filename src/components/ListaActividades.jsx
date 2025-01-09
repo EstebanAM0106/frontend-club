@@ -331,7 +331,7 @@ const ListaActividades = () => {
   return (
     <>
       <Typography variant="h4" gutterBottom sx={{ mt: 2 }}>
-        Lista de Eventos {JSON.stringify(user.user.email)}
+        Lista de Eventos {user ? JSON.stringify(user.user.email) : ""}
       </Typography>
       {loading ? (
         <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
