@@ -353,7 +353,7 @@ const ListaActividades = () => {
                       evento={evento}
                       onDelete={handleDelete}
                       onEdit={handleEdit}
-                      isAdmin={user.user.role === "admin"}
+                      isAdmin={user && user.user && user.user.role === "admin"}
                     />
                   </Grid2>
                 ))

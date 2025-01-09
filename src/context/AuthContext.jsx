@@ -12,18 +12,24 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      // Aquí puedes agregar lógica para verificar el token y obtener el usuario
       const userData = JSON.parse(localStorage.getItem("userData"));
-      setUser(userData); // Establecer los datos del usuario, incluyendo el rol
+      setUser(userData);
+
+      // Configurar el logout automático
+      const timeout = setTimeout(() => {
+        logout();
+      }, 60000); // 1 hora en milisegundos
+
+      return () => clearTimeout(timeout);
     } else {
       router.push("/login");
     }
   }, [router]);
 
   const login = (userData) => {
-    localStorage.setItem("userData", JSON.stringify(userData)); // Guardar los datos del usuario en localStorage
+    localStorage.setItem("userData", JSON.stringify(userData));
     setUser(userData);
-    router.push("/"); // Redirigir a la lista de actividades después del inicio de sesión
+    router.push("/");
   };
 
   const logout = () => {
