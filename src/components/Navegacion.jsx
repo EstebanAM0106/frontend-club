@@ -14,8 +14,8 @@ export default function Navegacion({ children }) {
           <Typography
             variant="h6"
             sx={{ flexGrow: 1, textDecoration: "none", color: "inherit" }}
-            component={NextLink}
-            href={"/"}
+            //component={NextLink}
+            //href={"/"}
           >
             Club de Leones
           </Typography>

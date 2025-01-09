@@ -1,20 +1,24 @@
+"use client";
+
 import MyThemeProvider from "@/components/MyThemeProvider";
 import Navegacion from "@/components/Navegacion";
 import { AuthProvider } from "@/context/AuthContext";
-
-export const metadata = {
-  title: "Club de Leones",
-  description:
-    "Pagina dedicada a llevar el registro de actividades deportivas de la escuela Club de Leones",
-};
+import { usePathname } from "next/navigation";
+import Container from "@mui/material/Container";
 
 export default function RootLayout({ children }) {
+  const pathname = usePathname();
+  const isLoginPage = pathname === "/login";
+
   return (
     <html lang="en">
       <body>
         <AuthProvider>
           <MyThemeProvider>
-            <Navegacion>{children}</Navegacion>
+            {!isLoginPage && <Navegacion />}
+            <Container sx={{ mt: isLoginPage ? 0 : 10, mb: 4 }}>
+              {children}
+            </Container>
           </MyThemeProvider>
         </AuthProvider>
       </body>
