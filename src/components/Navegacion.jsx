@@ -1,6 +1,6 @@
 import React from "react";
 import NextLink from "next/link";
-import { AppBar, Container, Toolbar, Typography } from "@mui/material";
+import { AppBar, Container, Toolbar, Typography, Button } from "@mui/material";
 import Sidebar from "@/components/Sidebar";
 
 export default function Navegacion({ children }) {
@@ -19,6 +19,16 @@ export default function Navegacion({ children }) {
           >
             Club de Leones
           </Typography>
+          {/* Botón de Iniciar Sesión */}
+          <Button
+            component={NextLink}
+            href="/login"
+            color="inherit"
+            variant="outlined"
+            sx={{ ml: 2 }}
+          >
+            Iniciar Sesión
+          </Button>
         </Toolbar>
       </AppBar>
       <Container sx={{ mt: 10, mb: 4 }}>{children}</Container>

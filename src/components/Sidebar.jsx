@@ -13,7 +13,7 @@ import {
   ListItemButton,
   ListItemIcon,
 } from "@mui/material";
-import { Assignment, Edit, Login, Menu, Close } from "@mui/icons-material";
+import { Assignment, Edit, Menu, Close } from "@mui/icons-material";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -39,11 +39,6 @@ const Sidebar = () => {
       href: "/registro",
       icon: <Edit />,
     },
-    {
-      text: "Iniciar sesión",
-      href: "/login",
-      icon: <Login />,
-    },
   ];
 
   const list = () => (
@@ -61,10 +56,7 @@ const Sidebar = () => {
               p: 0,
             }}
           >
-            <ListItemButton
-              component={NextLink}
-              href={item.href}
-            >
+            <ListItemButton component={NextLink} href={item.href}>
               <ListItemText primary={item.text} />
               <ListItemIcon>{item.icon}</ListItemIcon>
             </ListItemButton>
@@ -84,11 +76,7 @@ const Sidebar = () => {
       >
         <Menu />
       </IconButton>
-      <Drawer
-        anchor="left"
-        open={isOpen}
-        onClose={toggleDrawer(false)}
-      >
+      <Drawer anchor="left" open={isOpen} onClose={toggleDrawer(false)}>
         <Box
           sx={{
             display: "flex",
