@@ -15,10 +15,8 @@ export default function RootLayout({ children }) {
       <body>
         <AuthProvider>
           <MyThemeProvider>
-            {!isLoginPage && <Navegacion />}
-            <Container sx={{ mt: isLoginPage ? 0 : 10, mb: 4 }}>
-              {children}
-            </Container>
+            <Navegacion hideSidebar={isLoginPage} hideLogout={isLoginPage} />
+            <Container sx={{ mt: 10, mb: 4 }}>{children}</Container>
           </MyThemeProvider>
         </AuthProvider>
       </body>
