@@ -1,13 +1,10 @@
 "use client";
 
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useState } from "react";
 import axios from "@/services/api";
 import {
   Box,
   Button,
-  Container,
-  Grid2,
-  Paper,
   Typography,
   Alert,
   CircularProgress,
@@ -16,14 +13,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow,
+  Grid2,
+  Paper,
 } from "@mui/material";
 import { AuthContext } from "@/context/AuthContext";
+import useFetchEventos from "@/services/useFetchEventos";
 
 // Componente para cada evento
 const EventCard = ({ evento, onDelete, onEdit }) => {
@@ -77,27 +71,8 @@ const EventCard = ({ evento, onDelete, onEdit }) => {
 // Componente principal
 const ListaActividades = () => {
   const { user } = useContext(AuthContext);
-  const [eventos, setEventos] = useState([]);
-  const [inscripciones, setInscripciones] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { eventos, loading, error, setEventos } = useFetchEventos();
   const [deleteDialog, setDeleteDialog] = useState({ open: false, id: null });
-
-  useEffect(() => {
-    const fetchEventos = async () => {
-      try {
-        const response = await axios.get("/eventos");
-        setEventos(response.data);
-        setError(null);
-      } catch (err) {
-        setError("Error al obtener la lista de eventos.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchEventos();
-  }, []);
 
   const handleDelete = (id) => {
     setDeleteDialog({ open: true, id });

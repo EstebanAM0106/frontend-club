@@ -17,8 +17,12 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
+  MenuItem,
 } from "@mui/material";
 import { AuthContext } from "@/context/AuthContext";
+import SelectUsuario from "@/components/SelectUsuario";
+import useFetchEventos from "@/services/useFetchEventos";
+import SelectEvento from "./SelectEvento";
 
 // Componente para cada inscripción
 const InscripcionCard = ({ inscripcion, onDelete }) => {
@@ -62,19 +66,19 @@ const Inscripcion = () => {
     Nombre_Inscripcion: "",
   });
 
-  useEffect(() => {
-    const fetchInscripciones = async () => {
-      try {
-        const response = await axios.get("/inscripciones");
-        setInscripciones(response.data);
-        setError(null);
-      } catch (err) {
-        setError("Error al obtener las inscripciones.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchInscripciones = async () => {
+    try {
+      const response = await axios.get("/inscripciones");
+      setInscripciones(response.data);
+      setError(null);
+    } catch (err) {
+      setError("Error al obtener las inscripciones.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchInscripciones();
   }, []);
 
@@ -88,8 +92,8 @@ const Inscripcion = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/inscripciones", formData);
-      setInscripciones([...inscripciones, response.data]);
+      await axios.post("/inscripciones", formData);
+      fetchInscripciones();
       setFormData({
         ID_Evento: "",
         ID_Usuario: "",
@@ -110,9 +114,7 @@ const Inscripcion = () => {
     const { id } = deleteDialog;
     try {
       await axios.delete(`/inscripciones/${id}`);
-      setInscripciones(
-        inscripciones.filter((inscripcion) => inscripcion.ID_Inscripcion !== id)
-      );
+      fetchInscripciones();
       alert("Inscripción eliminada con éxito");
     } catch (err) {
       setError("Error al eliminar la inscripción.");
@@ -144,23 +146,19 @@ const Inscripcion = () => {
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
             <Grid2 container spacing={2}>
               <Grid2 xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="ID Evento"
-                  name="ID_Evento"
+                <SelectEvento
                   value={formData.ID_Evento}
-                  onChange={handleChange}
-                  required
+                  onChange={(e) =>
+                    setFormData({ ...formData, ID_Evento: e.target.value })
+                  }
                 />
               </Grid2>
               <Grid2 xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="ID Usuario"
-                  name="ID_Usuario"
+                <SelectUsuario
                   value={formData.ID_Usuario}
-                  onChange={handleChange}
-                  required
+                  onChange={(e) =>
+                    setFormData({ ...formData, ID_Usuario: e.target.value })
+                  }
                 />
               </Grid2>
               <Grid2 xs={12} sm={6}>

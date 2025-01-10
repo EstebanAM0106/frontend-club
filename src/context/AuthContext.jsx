@@ -18,7 +18,7 @@ export const AuthProvider = ({ children }) => {
       // Configurar el logout automático
       const timeout = setTimeout(() => {
         logout();
-      }, 60000); // 1 hora en milisegundos
+      }, 360000); // 1 hora en milisegundos
 
       return () => clearTimeout(timeout);
     } else {
