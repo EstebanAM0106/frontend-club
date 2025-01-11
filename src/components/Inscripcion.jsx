@@ -27,10 +27,6 @@ import useFetchInscripciones from "@/services/useFetchInscripciones";
 const InscripcionCard = ({ inscripcion, onDelete }) => {
   return (
     <Paper elevation={3} sx={{ padding: 2 }}>
-      <Typography variant="h6">{inscripcion.Nombre_Inscripcion}</Typography>
-      <Typography>
-        <strong>Fecha de Inscripción:</strong> {inscripcion.Fecha_Inscripcion}
-      </Typography>
       <Typography>
         <strong>ID Evento:</strong> {inscripcion.ID_Evento}
       </Typography>
@@ -141,28 +137,6 @@ const Inscripcion = () => {
                   onChange={(e) =>
                     setFormData({ ...formData, ID_Usuario: e.target.value })
                   }
-                />
-              </Grid2>
-              <Grid2 xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  type="date"
-                  label="Fecha de Inscripción"
-                  name="Fecha_Inscripcion"
-                  value={formData.Fecha_Inscripcion}
-                  onChange={handleChange}
-                  required
-                  InputLabelProps={{ shrink: true }}
-                />
-              </Grid2>
-              <Grid2 xs={12} sm={6}>
-                <TextField
-                  fullWidth
-                  label="Nombre de Inscripción"
-                  name="Nombre_Inscripcion"
-                  value={formData.Nombre_Inscripcion}
-                  onChange={handleChange}
-                  required
                 />
               </Grid2>
               <Grid2 xs={12}>
