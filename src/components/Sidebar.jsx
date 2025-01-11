@@ -13,7 +13,14 @@ import {
   ListItemButton,
   ListItemIcon,
 } from "@mui/material";
-import { Assignment, Edit, Menu, Close, ListAlt } from "@mui/icons-material";
+import {
+  Assignment,
+  Edit,
+  Menu,
+  Close,
+  ListAlt,
+  Timer,
+} from "@mui/icons-material";
 
 const Sidebar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -43,6 +50,11 @@ const Sidebar = () => {
       text: "Inscripciones",
       href: "/inscripcion",
       icon: <ListAlt />,
+    },
+    {
+      text: "Registrar Tiempo",
+      href: "/registroTiempo",
+      icon: <Timer />,
     },
   ];
 
