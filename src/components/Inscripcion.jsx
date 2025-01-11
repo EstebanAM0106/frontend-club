@@ -1,14 +1,12 @@
 "use client";
 
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useState } from "react";
 import axios from "@/services/api";
 import {
   Box,
   Button,
   Container,
   Grid2,
-  Paper,
-  TextField,
   Typography,
   Alert,
   CircularProgress,
@@ -22,30 +20,7 @@ import { AuthContext } from "@/context/AuthContext";
 import SelectUsuario from "@/components/SelectUsuario";
 import SelectEvento from "@/components/SelectEvento";
 import useFetchInscripciones from "@/services/useFetchInscripciones";
-
-// Componente para cada inscripción
-const InscripcionCard = ({ inscripcion, onDelete }) => {
-  return (
-    <Paper elevation={3} sx={{ padding: 2 }}>
-      <Typography>
-        <strong>ID Evento:</strong> {inscripcion.ID_Evento}
-      </Typography>
-      <Typography>
-        <strong>ID Usuario:</strong> {inscripcion.ID_Usuario}
-      </Typography>
-      <Box sx={{ mt: 2 }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => onDelete(inscripcion.ID_Inscripcion)}
-          sx={{ mr: 1 }}
-        >
-          Eliminar
-        </Button>
-      </Box>
-    </Paper>
-  );
-};
+import TablaInscripciones from "@/components/TablaInscripciones";
 
 // Componente principal
 const Inscripcion = () => {
@@ -56,9 +31,8 @@ const Inscripcion = () => {
   const [formData, setFormData] = useState({
     ID_Evento: "",
     ID_Usuario: "",
-    Fecha_Inscripcion: "",
-    Nombre_Inscripcion: "",
   });
+  const [formError, setFormError] = useState(null);
 
   const handleChange = (e) => {
     setFormData({
@@ -69,18 +43,23 @@ const Inscripcion = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setFormError(null); // Limpiar error antes de registrar
     try {
-      await axios.post("/inscripciones", formData);
-      setFormData({
-        ID_Evento: "",
-        ID_Usuario: "",
-        Fecha_Inscripcion: "",
-        Nombre_Inscripcion: "",
-      });
-      fetchInscripciones();
-      alert("Inscripción registrada con éxito");
+      const response = await axios.post("/inscripciones", formData);
+      if (response.status === 201 || response.status === 200) {
+        setFormData({
+          ID_Evento: "",
+          ID_Usuario: "",
+        });
+        fetchInscripciones(); // Asegura que los datos se actualicen
+        alert("Inscripción registrada con éxito");
+      } else {
+        throw new Error("Error inesperado al registrar la inscripción.");
+      }
     } catch (err) {
-      setError("Error al registrar la inscripción.");
+      setFormError(
+        err.response?.data?.message || "Error al registrar la inscripción."
+      );
     }
   };
 
@@ -95,7 +74,7 @@ const Inscripcion = () => {
       fetchInscripciones();
       alert("Inscripción eliminada con éxito");
     } catch (err) {
-      setError("Error al eliminar la inscripción.");
+      setFormError("Error al eliminar la inscripción.");
     } finally {
       setDeleteDialog({ open: false, id: null });
     }
@@ -119,6 +98,11 @@ const Inscripcion = () => {
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
+            </Alert>
+          )}
+          {formError && (
+            <Alert severity="error" sx={{ mb: 2 }}>
+              {formError}
             </Alert>
           )}
           <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
@@ -146,16 +130,7 @@ const Inscripcion = () => {
               </Grid2>
             </Grid2>
           </Box>
-          <Grid2 container spacing={2} sx={{ mt: 4 }}>
-            {inscripciones.map((inscripcion) => (
-              <Grid2 xs={12} sm={6} md={4} key={inscripcion.ID_Inscripcion}>
-                <InscripcionCard
-                  inscripcion={inscripcion}
-                  onDelete={handleDelete}
-                />
-              </Grid2>
-            ))}
-          </Grid2>
+          <TablaInscripciones />
         </>
       )}
       <Dialog
