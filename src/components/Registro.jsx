@@ -10,6 +10,7 @@ import {
   TextField,
   Typography,
 } from "@mui/material";
+import SelectSede from "@/components/SelectSede";
 
 const Registro = () => {
   const [evento, setEvento] = useState({
@@ -91,15 +92,8 @@ const Registro = () => {
 
   return (
     <>
-      <Box
-        component="form"
-        onSubmit={handleSubmit}
-        sx={{ mt: 4 }}
-      >
-        <Typography
-          variant="h4"
-          gutterBottom
-        >
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
           Registrar Evento
         </Typography>
         <Grid2
@@ -257,24 +251,15 @@ const Registro = () => {
             />
           </Grid2>
           <Grid2 size={1}>
-            <TextField
-              fullWidth
-              type="number"
-              label="ID de la Sede"
-              name="ID_Sede"
+            <SelectSede
               value={evento.ID_Sede}
-              onChange={handleChange}
-              required
-              error={!!errors.ID_Sede}
-              helperText={errors.ID_Sede}
+              onChange={(e) =>
+                setEvento({ ...evento, ID_Sede: e.target.value })
+              }
             />
           </Grid2>
           <Grid2 size={2}>
-            <Button
-              type="submit"
-              variant="contained"
-              color="primary"
-            >
+            <Button type="submit" variant="contained" color="primary">
               Registrar
             </Button>
           </Grid2>
