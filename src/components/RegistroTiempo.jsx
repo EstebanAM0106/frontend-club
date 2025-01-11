@@ -1,19 +1,10 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import {
-  TextField,
-  CircularProgress,
-  Button,
-  Box,
-  Typography,
-  Alert,
-} from "@mui/material";
+import { Box, Button, Typography, Alert, TextField } from "@mui/material";
 import axios from "@/services/api";
 import SelectEvento from "@/components/SelectEvento";
 import SelectUsuarioFiltrado from "@/components/SelectUsuariofiltrado";
-import useFetchInscripciones from "@/services/useFetchInscripciones";
-import useFetchUsuarios from "@/services/useFetchUsuarios";
 
 const RegistroTiempo = () => {
   const [selectedEvento, setSelectedEvento] = useState("");
@@ -23,34 +14,32 @@ const RegistroTiempo = () => {
   const [loadingUsuarios, setLoadingUsuarios] = useState(false);
   const [errorUsuarios, setErrorUsuarios] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
-  const { inscripciones } = useFetchInscripciones();
-  const { usuarios } = useFetchUsuarios();
 
   useEffect(() => {
     if (selectedEvento) {
-      setLoadingUsuarios(true);
-      const inscritos = inscripciones
-        .filter(
-          (inscripcion) => inscripcion.ID_Evento === parseInt(selectedEvento)
-        )
-        .map((inscripcion) => {
-          const usuario = usuarios.find(
-            (u) => u.ID_Usuario === inscripcion.ID_Usuario
+      const fetchUsuariosInscritos = async () => {
+        setLoadingUsuarios(true);
+        try {
+          const response = await axios.get(
+            `/eventos/${selectedEvento}/usuarios`
           );
-          return {
-            ID_Usuario: inscripcion.ID_Usuario,
-            Nombre: `${usuario.Nombre} ${usuario.Apellido}`, // Combine nombre and apellido
-          };
-        });
-      setUsuariosInscritos(inscritos);
-      setLoadingUsuarios(false);
+          setUsuariosInscritos(response.data);
+          setErrorUsuarios(null);
+        } catch (err) {
+          setErrorUsuarios("Error al cargar los usuarios inscritos.");
+        } finally {
+          setLoadingUsuarios(false);
+        }
+      };
+
+      fetchUsuariosInscritos();
     }
-  }, [selectedEvento, inscripciones, usuarios]);
+  }, [selectedEvento]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("/registrotiempo", {
+      await axios.post("/tiempos", {
         ID_Evento: selectedEvento,
         ID_Usuario: selectedUsuario,
         Tiempo: tiempo,
@@ -77,6 +66,7 @@ const RegistroTiempo = () => {
       <SelectEvento
         value={selectedEvento}
         onChange={(e) => setSelectedEvento(e.target.value)}
+        sx={{ mb: 3 }} // Añadir margen inferior
       />
       {selectedEvento && (
         <>
@@ -86,6 +76,7 @@ const RegistroTiempo = () => {
             usuarios={usuariosInscritos}
             loading={loadingUsuarios}
             error={errorUsuarios}
+            sx={{ mb: 3 }} // Añadir margen inferior
           />
           <TextField
             fullWidth
@@ -96,16 +87,11 @@ const RegistroTiempo = () => {
             required
             sx={{ mt: 2 }}
           />
-          <Button
-            type="submit"
-            variant="contained"
-            color="primary"
-            sx={{ mt: 2 }}
-          >
-            Registrar
-          </Button>
         </>
       )}
+      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+        Registrar
+      </Button>
     </Box>
   );
 };
