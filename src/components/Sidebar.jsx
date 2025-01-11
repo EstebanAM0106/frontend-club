@@ -20,6 +20,7 @@ import {
   Close,
   ListAlt,
   Timer,
+  PersonAdd,
 } from "@mui/icons-material";
 
 const Sidebar = () => {
@@ -55,6 +56,11 @@ const Sidebar = () => {
       text: "Registrar Tiempo",
       href: "/registroTiempo",
       icon: <Timer />,
+    },
+    {
+      text: "Registrar Usuario",
+      href: "/registroUsuario",
+      icon: <PersonAdd />,
     },
   ];
 
