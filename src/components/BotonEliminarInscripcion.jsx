@@ -56,7 +56,7 @@ const BotonEliminarInscripcion = ({ id, fetchInscripciones }) => {
           </Button>
         </DialogActions>
       </Dialog>
-      {error && <p>{error}</p>}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </>
   );
 };

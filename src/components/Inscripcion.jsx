@@ -25,8 +25,13 @@ import TablaInscripciones from "@/components/TablaInscripciones";
 // Componente principal
 const Inscripcion = () => {
   const { user } = useContext(AuthContext);
-  const { inscripciones, loading, error, setInscripciones } =
-    useFetchInscripciones();
+  const {
+    inscripciones,
+    loading,
+    error,
+    setInscripciones,
+    fetchInscripciones,
+  } = useFetchInscripciones(); // Desestructurar fetchInscripciones desde el hook
   const [deleteDialog, setDeleteDialog] = useState({ open: false, id: null });
   const [formData, setFormData] = useState({
     ID_Evento: "",
@@ -58,7 +63,9 @@ const Inscripcion = () => {
       }
     } catch (err) {
       setFormError(
-        err.response?.data?.message || "Error al registrar la inscripción."
+        err.response?.data?.errors
+          ? err.response.data.errors.map((error) => error.msg).join(", ")
+          : "Error al registrar la inscripción."
       );
     }
   };
@@ -130,7 +137,8 @@ const Inscripcion = () => {
               </Grid2>
             </Grid2>
           </Box>
-          <TablaInscripciones />
+          <TablaInscripciones onDelete={handleDelete} />{" "}
+          {/* Pasar handleDelete */}
         </>
       )}
       <Dialog

@@ -6,23 +6,23 @@ const useFetchEventos = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  useEffect(() => {
-    const fetchEventos = async () => {
-      try {
-        const response = await axios.get("/eventos");
-        setEventos(response.data);
-        setError(null);
-      } catch (err) {
-        setError("Error al obtener la lista de eventos.");
-      } finally {
-        setLoading(false);
-      }
-    };
+  const fetchEventos = async () => {
+    try {
+      const response = await axios.get("/eventos");
+      setEventos(response.data);
+      setError(null);
+    } catch (err) {
+      setError("Error al obtener la lista de eventos.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
+  useEffect(() => {
     fetchEventos();
   }, []);
 
-  return { eventos, loading, error, setEventos };
+  return { eventos, loading, error, setEventos, fetchEventos };
 };
 
 export default useFetchEventos;

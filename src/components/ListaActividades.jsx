@@ -13,65 +13,17 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  Grid2,
   Paper,
+  Grid,
 } from "@mui/material";
 import { AuthContext } from "@/context/AuthContext";
 import useFetchEventos from "@/services/useFetchEventos";
+import EventCard from "@/components/EventCard"; // Asegúrate de importar EventCard
 
-// Componente para cada evento
-const EventCard = ({ evento, onDelete, onEdit }) => {
-  const formatDate = (dateString) => {
-    const options = { year: "numeric", month: "2-digit", day: "2-digit" };
-    return new Date(dateString).toLocaleDateString("es-ES", options);
-  };
-
-  return (
-    <Paper elevation={3} sx={{ padding: 2 }}>
-      <Typography variant="h6">{evento.Nombre}</Typography>
-      <Typography>
-        <strong>Convocatoria:</strong> {formatDate(evento.Fecha_Convocatoria)}
-      </Typography>
-      <Typography>
-        <strong>Inicio:</strong> {formatDate(evento.Fecha_Inicio)}
-      </Typography>
-      <Typography>
-        <strong>Fin:</strong> {formatDate(evento.Fecha_Fin)}
-      </Typography>
-      <Typography>
-        <strong>Modalidad:</strong> {evento.Modalidad}
-      </Typography>
-      <Typography>
-        <strong>Costo:</strong> ${evento.Costo}
-      </Typography>
-      <Typography>
-        <strong>Sede:</strong> {evento.SedeNombre}
-      </Typography>
-      <Box sx={{ mt: 2 }}>
-        <Button
-          variant="contained"
-          color="secondary"
-          onClick={() => onDelete(evento.ID_Evento)}
-          sx={{ mr: 1 }}
-        >
-          Eliminar
-        </Button>
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={() => onEdit(evento)}
-        >
-          Editar
-        </Button>
-      </Box>
-    </Paper>
-  );
-};
-
-// Componente principal
 const ListaActividades = () => {
   const { user } = useContext(AuthContext);
-  const { eventos, loading, error, setEventos } = useFetchEventos();
+  const { eventos, loading, error, setEventos, fetchEventos } =
+    useFetchEventos();
   const [deleteDialog, setDeleteDialog] = useState({ open: false, id: null });
 
   const handleDelete = (id) => {
@@ -83,11 +35,9 @@ const ListaActividades = () => {
     try {
       await axios.delete(`/eventos/${id}`);
       setEventos(eventos.filter((evento) => evento.ID_Evento !== id));
-      alert("Evento eliminado con éxito");
-    } catch (err) {
-      setError("No se pudo eliminar el evento. Por favor, intenta nuevamente.");
-    } finally {
       setDeleteDialog({ open: false, id: null });
+    } catch (err) {
+      console.error("Error al eliminar el evento:", err);
     }
   };
 
@@ -95,46 +45,27 @@ const ListaActividades = () => {
     setDeleteDialog({ open: false, id: null });
   };
 
-  const handleEdit = (evento) => {
-    // Implementar la lógica de edición
-  };
-
   return (
-    <>
-      <Typography variant="h4" gutterBottom sx={{ mt: 2 }}>
-        Lista de Eventos
+    <Box>
+      <Typography variant="h4" gutterBottom>
+        Lista de Actividades
       </Typography>
       {loading ? (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 4 }}>
-          <CircularProgress />
-        </Box>
+        <CircularProgress />
+      ) : error ? (
+        <Alert severity="error">{error}</Alert>
       ) : (
-        <>
-          {error && (
-            <Alert severity="error" sx={{ mb: 2 }}>
-              {error}
-            </Alert>
-          )}
-          {!error && (
-            <Grid2 container spacing={2}>
-              {eventos.length > 0 ? (
-                eventos.map((evento) => (
-                  <Grid2 xs={12} sm={6} md={4} key={evento.ID_Evento}>
-                    <EventCard
-                      evento={evento}
-                      onDelete={handleDelete}
-                      onEdit={handleEdit}
-                    />
-                  </Grid2>
-                ))
-              ) : (
-                <Grid2 xs={12}>
-                  <Typography>No hay eventos registrados.</Typography>
-                </Grid2>
-              )}
-            </Grid2>
-          )}
-        </>
+        <Grid container spacing={2}>
+          {eventos.map((evento) => (
+            <Grid item xs={12} sm={6} md={4} key={evento.ID_Evento}>
+              <EventCard
+                evento={evento}
+                onDelete={handleDelete}
+                fetchEventos={fetchEventos}
+              />
+            </Grid>
+          ))}
+        </Grid>
       )}
       <Dialog
         open={deleteDialog.open}
@@ -147,18 +78,20 @@ const ListaActividades = () => {
         </DialogTitle>
         <DialogContent>
           <DialogContentText id="confirm-delete-description">
-            ¿Estás seguro de que deseas eliminar este evento? Esta acción no se
-            puede deshacer.
+            ¿Estás seguro de que deseas eliminar esta actividad? Esta acción no
+            se puede deshacer.
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={cancelDelete}>Cancelar</Button>
-          <Button onClick={confirmDelete} color="secondary">
+          <Button onClick={cancelDelete} color="secondary">
+            Cancelar
+          </Button>
+          <Button onClick={confirmDelete} color="primary">
             Eliminar
           </Button>
         </DialogActions>
       </Dialog>
-    </>
+    </Box>
   );
 };
 
