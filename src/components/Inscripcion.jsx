@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState, useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import axios from "@/services/api";
 import {
   Box,
@@ -17,12 +17,11 @@ import {
   DialogContent,
   DialogContentText,
   DialogTitle,
-  MenuItem,
 } from "@mui/material";
 import { AuthContext } from "@/context/AuthContext";
 import SelectUsuario from "@/components/SelectUsuario";
-import useFetchEventos from "@/services/useFetchEventos";
-import SelectEvento from "./SelectEvento";
+import SelectEvento from "@/components/SelectEvento";
+import useFetchInscripciones from "@/services/useFetchInscripciones";
 
 // Componente para cada inscripción
 const InscripcionCard = ({ inscripcion, onDelete }) => {
@@ -55,9 +54,8 @@ const InscripcionCard = ({ inscripcion, onDelete }) => {
 // Componente principal
 const Inscripcion = () => {
   const { user } = useContext(AuthContext);
-  const [inscripciones, setInscripciones] = useState([]);
-  const [error, setError] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const { inscripciones, loading, error, setInscripciones } =
+    useFetchInscripciones();
   const [deleteDialog, setDeleteDialog] = useState({ open: false, id: null });
   const [formData, setFormData] = useState({
     ID_Evento: "",
@@ -65,22 +63,6 @@ const Inscripcion = () => {
     Fecha_Inscripcion: "",
     Nombre_Inscripcion: "",
   });
-
-  const fetchInscripciones = async () => {
-    try {
-      const response = await axios.get("/inscripciones");
-      setInscripciones(response.data);
-      setError(null);
-    } catch (err) {
-      setError("Error al obtener las inscripciones.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  useEffect(() => {
-    fetchInscripciones();
-  }, []);
 
   const handleChange = (e) => {
     setFormData({
@@ -93,13 +75,13 @@ const Inscripcion = () => {
     e.preventDefault();
     try {
       await axios.post("/inscripciones", formData);
-      fetchInscripciones();
       setFormData({
         ID_Evento: "",
         ID_Usuario: "",
         Fecha_Inscripcion: "",
         Nombre_Inscripcion: "",
       });
+      fetchInscripciones();
       alert("Inscripción registrada con éxito");
     } catch (err) {
       setError("Error al registrar la inscripción.");
