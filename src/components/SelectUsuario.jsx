@@ -1,3 +1,14 @@
+/**
+ * Componente SelectUsuario
+ *
+ * Este componente renderiza un campo de selección de usuarios utilizando Material-UI.
+ *
+ * @param {Object} props - Las propiedades del componente.
+ * @param {string} props.value - El valor seleccionado actualmente.
+ * @param {function} props.onChange - Función que se llama cuando el valor seleccionado cambia.
+ *
+ * @returns {JSX.Element} Un campo de selección de usuarios.
+ */
 import React from "react";
 import { TextField, MenuItem, CircularProgress } from "@mui/material";
 import useFetchUsuarios from "@/services/useFetchUsuarios";

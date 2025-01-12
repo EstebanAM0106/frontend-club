@@ -1,3 +1,46 @@
+/**
+ * Componente RegistroTiempo
+ *
+ * Este componente permite registrar el tiempo de un usuario en un evento específico.
+ *
+ * @component
+ *
+ * @returns {JSX.Element} El formulario para registrar el tiempo.
+ *
+ * @example
+ * <RegistroTiempo />
+ *
+ * @description
+ * El componente utiliza varios estados para manejar la selección del evento,
+ * la selección del usuario, el tiempo ingresado, los usuarios inscritos en el evento,
+ * el estado de carga y los mensajes de error y éxito.
+ *
+ * @function
+ * @name RegistroTiempo
+ *
+ * @property {string} selectedEvento - El ID del evento seleccionado.
+ * @property {string} selectedUsuario - El ID del usuario seleccionado.
+ * @property {string} tiempo - El tiempo registrado en formato HH:MM:SS.SSS.
+ * @property {Array} usuariosInscritos - Lista de usuarios inscritos en el evento seleccionado.
+ * @property {boolean} loadingUsuarios - Estado de carga de los usuarios inscritos.
+ * @property {string|null} errorUsuarios - Mensaje de error al cargar los usuarios inscritos.
+ * @property {string} successMessage - Mensaje de éxito al registrar el tiempo.
+ *
+ * @function useEffect
+ * @description
+ * Hook que se ejecuta cuando cambia el evento seleccionado.
+ * Carga los usuarios inscritos en el evento seleccionado.
+ *
+ * @function handleSubmit
+ * @description
+ * Maneja el envío del formulario para registrar el tiempo.
+ * Envía una solicitud POST al servidor con los datos del evento, usuario y tiempo.
+ *
+ * @requires @mui/material
+ * @requires axios
+ * @requires SelectEvento
+ * @requires SelectUsuarioFiltrado
+ */
 "use client";
 
 import React, { useState, useEffect } from "react";
