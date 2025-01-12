@@ -39,7 +39,7 @@ const SelectUsuarioFiltrado = ({
       ) : (
         usuarios.map((usuario) => (
           <MenuItem key={usuario.ID_Usuario} value={usuario.ID_Usuario}>
-            {usuario.Nombre}
+            {usuario.Nombre} {usuario.Apellido}
           </MenuItem>
         ))
       )}
