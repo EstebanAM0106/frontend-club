@@ -1,8 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
-import axios from "@/services/api";
-import SelectUsuario from "./SelectUsuario";
+import React, { useState, useEffect, useContext } from "react";
+import { AuthContext } from "@/context/AuthContext";
 import {
   Box,
   Typography,
@@ -17,83 +16,64 @@ const formatDate = (dateString) => {
 };
 
 const VerInfoUsuario = () => {
-  const [selectedUserId, setSelectedUserId] = useState("");
-  const [selectedUser, setSelectedUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
-
-  const handleChange = (event) => {
-    const userId = event.target.value;
-    console.log("ID de usuario seleccionado:", userId); // Agregado
-    setSelectedUserId(userId);
-  };
+  const { user } = useContext(AuthContext);
 
   useEffect(() => {
-    if (selectedUserId) {
-      console.log("Realizando solicitud para el ID:", selectedUserId); // Agregado
-      const fetchUserDetails = async () => {
-        setLoading(true);
-        try {
-          const response = await axios.get(`/usuarios/${selectedUserId}`);
-          console.log("Datos del usuario recibidos:", response.data); // Añadido
-          setSelectedUser(response.data);
-          setError(null);
-        } catch (err) {
-          console.error("Error al obtener detalles del usuario:", err); // Mejorado
-          setError("Error al obtener los detalles del usuario.");
-          setSelectedUser(null);
-        } finally {
-          setLoading(false);
-        }
-      };
-      fetchUserDetails();
-    } else {
-      setSelectedUser(null);
-      setError(null);
-    }
-  }, [selectedUserId]);
+    console.log("User information:", user);
+  }, [user]);
+
+  if (loading) {
+    return (
+      <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+        <CircularProgress />
+      </Box>
+    );
+  }
+
+  if (error) {
+    return (
+      <Typography color="error" sx={{ mt: 2 }}>
+        {error}
+      </Typography>
+    );
+  }
 
   return (
     <Box>
-      <SelectUsuario value={selectedUserId} onChange={handleChange} />
-      {loading && (
-        <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
-          <CircularProgress />
-        </Box>
-      )}
-      {error && (
-        <Typography color="error" sx={{ mt: 2 }}>
-          {error}
-        </Typography>
-      )}
-      {selectedUser && (
+      {user ? (
         <Card sx={{ mt: 2 }}>
           <CardContent>
             <Box sx={{ mt: 2 }}>
               <Typography variant="h5">Información del Usuario</Typography>
               <Typography>
-                <strong>Nombre:</strong> {selectedUser.Nombre}
+                <strong>Nombre:</strong> {user.user.Nombre}
               </Typography>
               <Typography>
-                <strong>Apellido:</strong> {selectedUser.Apellido}
+                <strong>Apellido:</strong> {user.user.Apellido}
               </Typography>
               <Typography>
-                <strong>Email:</strong> {selectedUser.Email}
+                <strong>Email:</strong> {user.user.email}
               </Typography>
               <Typography>
-                <strong>Rol:</strong> {selectedUser.Rol}
+                <strong>Rol:</strong> {user.user.role}
               </Typography>
               <Typography>
-                <strong>Género:</strong> {selectedUser.Genero}
+                <strong>Género:</strong> {user.user.Genero}
               </Typography>
               <Typography>
                 <strong>Fecha de Nacimiento:</strong>{" "}
-                {formatDate(selectedUser.Fecha_Nacimiento)}
+                {formatDate(user.user.Fecha_Nacimiento)}
               </Typography>
-              {/* Añadir más campos según la estructura de selectedUser */}
+              {/* Añadir más campos según la estructura de user */}
             </Box>
           </CardContent>
         </Card>
+      ) : (
+        <Typography sx={{ mt: 2 }}>
+          No se encontró información del usuario.
+        </Typography>
       )}
     </Box>
   );

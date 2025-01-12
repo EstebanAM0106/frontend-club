@@ -2,6 +2,7 @@
 
 import React, { createContext, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
+import axios from "@/services/api";
 
 export const AuthContext = createContext();
 
@@ -10,24 +11,36 @@ export const AuthProvider = ({ children }) => {
   const router = useRouter();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (token) {
-      const userData = JSON.parse(localStorage.getItem("userData"));
-      setUser(userData);
+    const fetchUserData = async () => {
+      const token = localStorage.getItem("token");
+      if (token) {
+        try {
+          // Fetch user data from backend
+          const response = await axios.get("/api/user", {
+            headers: { Authorization: `Bearer ${token}` },
+          });
+          setUser(response.data);
 
-      // Configurar el logout automático
-      const timeout = setTimeout(() => {
-        logout();
-      }, 360000); // 1 hora en milisegundos
+          // Configure automatic logout
+          const timeout = setTimeout(() => {
+            logout();
+          }, 360000); // 1 hour in milliseconds
 
-      return () => clearTimeout(timeout);
-    } else {
-      router.push("/login");
-    }
+          return () => clearTimeout(timeout);
+        } catch (error) {
+          console.error("Failed to fetch user data:", error);
+          logout();
+        }
+      } else {
+        router.push("/login");
+      }
+    };
+
+    fetchUserData();
   }, [router]);
 
   const login = (userData) => {
-    localStorage.setItem("userData", JSON.stringify(userData));
+    localStorage.setItem("token", userData.token);
     setUser(userData);
     router.push("/");
   };

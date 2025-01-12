@@ -9,7 +9,7 @@ export default function Navegacion({
   hideLogout = false,
   children,
 }) {
-  const { logout } = useContext(AuthContext);
+  const { user, logout } = useContext(AuthContext);
 
   return (
     <>
@@ -28,14 +28,21 @@ export default function Navegacion({
           </Typography>
           {/* Botón de Cerrar Sesión */}
           {hideLogout !== true && (
-            <Button
-              onClick={logout}
-              color="inherit"
-              variant="outlined"
-              sx={{ ml: 2 }}
-            >
-              Cerrar Sesión
-            </Button>
+            <>
+              {user && (
+                <Typography variant="body1" sx={{ mr: 2 }}>
+                  {user.user.Nombre} {user.user.Apellido}
+                </Typography>
+              )}
+              <Button
+                onClick={logout}
+                color="inherit"
+                variant="outlined"
+                sx={{ ml: 2 }}
+              >
+                Cerrar Sesión
+              </Button>
+            </>
           )}
         </Toolbar>
       </AppBar>
