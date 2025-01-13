@@ -17,12 +17,14 @@ import {
   Box,
   Divider,
 } from "@mui/material";
+import BotonEliminarTiempo from "./BotonEliminarTiempo";
 
 const TablaTiempos = () => {
   const {
     tiempos,
     loading: loadingTiempos,
     error: errorTiempos,
+    fetchTiempos,
   } = useFetchTiempo();
   const {
     eventos,
@@ -91,6 +93,7 @@ const TablaTiempos = () => {
                     <TableCell>Posición</TableCell>
                     <TableCell>Usuario</TableCell>
                     <TableCell>Tiempo</TableCell>
+                    <TableCell>Acciones</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
@@ -128,12 +131,18 @@ const TablaTiempos = () => {
                               : "N/A"}
                           </TableCell>
                           <TableCell>{tiempo.Tiempo}</TableCell>
+                          <TableCell>
+                            <BotonEliminarTiempo
+                              id={tiempo.ID_Registro}
+                              fetchTiempos={fetchTiempos}
+                            />
+                          </TableCell>
                         </TableRow>
                       );
                     })
                   ) : (
                     <TableRow>
-                      <TableCell colSpan={3} align="center">
+                      <TableCell colSpan={4} align="center">
                         No hay registros de tiempo para este evento.
                       </TableCell>
                     </TableRow>
