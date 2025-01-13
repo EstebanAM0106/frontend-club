@@ -48,6 +48,7 @@ import { Box, Button, Typography, Alert, TextField } from "@mui/material";
 import axios from "@/services/api";
 import SelectEvento from "@/components/SelectEvento";
 import SelectUsuarioFiltrado from "@/components/SelectUsuariofiltrado";
+import useFetchTiempo from "@/services/useFetchTiempo"; // Import the hook
 
 const RegistroTiempo = () => {
   const [selectedEvento, setSelectedEvento] = useState("");
@@ -57,6 +58,8 @@ const RegistroTiempo = () => {
   const [loadingUsuarios, setLoadingUsuarios] = useState(false);
   const [errorUsuarios, setErrorUsuarios] = useState(null);
   const [successMessage, setSuccessMessage] = useState("");
+
+  const { fetchTiempos } = useFetchTiempo(); // Destructure fetchTiempos from the hook
 
   useEffect(() => {
     if (selectedEvento) {
@@ -81,18 +84,34 @@ const RegistroTiempo = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSuccessMessage("");
+    setErrorUsuarios(null); // Reset error message
+    console.log("Submitting form..."); // Debugging
     try {
-      await axios.post("/tiempos", {
+      const response = await axios.post("/registroTiempo", {
         ID_Evento: selectedEvento,
         ID_Usuario: selectedUsuario,
         Tiempo: tiempo,
       });
-      setSuccessMessage("Tiempo registrado con éxito");
-      setSelectedEvento("");
-      setSelectedUsuario("");
-      setTiempo("");
+      console.log("Response:", response); // Debugging
+      if (response.status === 200 || response.status === 201) {
+        setSuccessMessage("Tiempo registrado con éxito");
+        setErrorUsuarios(null); // Clear error on success
+        setSelectedEvento("");
+        setSelectedUsuario("");
+        setTiempo("");
+        fetchTiempos(); // Refresh the registros de tiempo
+      } else {
+        throw new Error("Error inesperado al registrar el tiempo.");
+      }
     } catch (err) {
-      setErrorUsuarios("Error al registrar el tiempo.");
+      console.error("Error during submission:", err); // Debugging
+      setSuccessMessage(""); // Clear success message on error
+      setErrorUsuarios(
+        err.response?.data?.errors
+          ? err.response.data.errors.map((error) => error.msg).join(", ")
+          : "Error al registrar el tiempo."
+      );
     }
   };
 
@@ -104,6 +123,11 @@ const RegistroTiempo = () => {
       {successMessage && (
         <Alert severity="success" sx={{ mb: 2 }}>
           {successMessage}
+        </Alert>
+      )}
+      {errorUsuarios && (
+        <Alert severity="error" sx={{ mb: 2 }}>
+          {errorUsuarios}
         </Alert>
       )}
       <SelectEvento
@@ -127,14 +151,13 @@ const RegistroTiempo = () => {
             value={tiempo}
             onChange={(e) => setTiempo(e.target.value)}
             placeholder="00:00:00.000"
-            required
-            sx={{ mt: 2 }}
+            sx={{ mb: 3 }} // Añadir margen inferior
           />
+          <Button type="submit" variant="contained" color="primary">
+            Registrar
+          </Button>
         </>
       )}
-      <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
-        Registrar
-      </Button>
     </Box>
   );
 };
