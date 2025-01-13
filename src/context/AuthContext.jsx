@@ -16,10 +16,10 @@ export const AuthProvider = ({ children }) => {
       if (token) {
         try {
           // Fetch user data from backend
-          const response = await axios.get("/api/user", {
-            headers: { Authorization: `Bearer ${token}` },
-          });
-          setUser(response.data);
+          // const response = await axios.get("/api/user", {
+          //   headers: { Authorization: `Bearer ${token}` },
+          // });
+          // setUser(response.data);
 
           // Configure automatic logout
           const timeout = setTimeout(() => {
