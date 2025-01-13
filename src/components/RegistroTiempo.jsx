@@ -49,6 +49,7 @@ import axios from "@/services/api";
 import SelectEvento from "@/components/SelectEvento";
 import SelectUsuarioFiltrado from "@/components/SelectUsuariofiltrado";
 import useFetchTiempo from "@/services/useFetchTiempo"; // Import the hook
+import TablaTiempos from "./TablaTiempos";
 
 const RegistroTiempo = () => {
   const [selectedEvento, setSelectedEvento] = useState("");
@@ -116,48 +117,51 @@ const RegistroTiempo = () => {
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
-      <Typography variant="h4" gutterBottom>
-        Registrar Tiempo
-      </Typography>
-      {successMessage && (
-        <Alert severity="success" sx={{ mb: 2 }}>
-          {successMessage}
-        </Alert>
-      )}
-      {errorUsuarios && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {errorUsuarios}
-        </Alert>
-      )}
-      <SelectEvento
-        value={selectedEvento}
-        onChange={(e) => setSelectedEvento(e.target.value)}
-        sx={{ mb: 3 }} // Añadir margen inferior
-      />
-      {selectedEvento && (
-        <>
-          <SelectUsuarioFiltrado
-            value={selectedUsuario}
-            onChange={(e) => setSelectedUsuario(e.target.value)}
-            usuarios={usuariosInscritos}
-            loading={loadingUsuarios}
-            error={errorUsuarios}
-            sx={{ mb: 3 }} // Añadir margen inferior
-          />
-          <TextField
-            fullWidth
-            label="Tiempo (HH:MM:SS.SSS)"
-            value={tiempo}
-            onChange={(e) => setTiempo(e.target.value)}
-            placeholder="00:00:00.000"
-            sx={{ mb: 3 }} // Añadir margen inferior
-          />
-          <Button type="submit" variant="contained" color="primary">
-            Registrar
-          </Button>
-        </>
-      )}
+    <Box>
+      <Box component="form" onSubmit={handleSubmit} sx={{ mt: 4 }}>
+        <Typography variant="h4" gutterBottom>
+          Registrar Tiempo
+        </Typography>
+        {successMessage && (
+          <Alert severity="success" sx={{ mb: 2 }}>
+            {successMessage}
+          </Alert>
+        )}
+        {errorUsuarios && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {errorUsuarios}
+          </Alert>
+        )}
+        <SelectEvento
+          value={selectedEvento}
+          onChange={(e) => setSelectedEvento(e.target.value)}
+          sx={{ mb: 3 }} // Añadir margen inferior
+        />
+        {selectedEvento && (
+          <>
+            <SelectUsuarioFiltrado
+              value={selectedUsuario}
+              onChange={(e) => setSelectedUsuario(e.target.value)}
+              usuarios={usuariosInscritos}
+              loading={loadingUsuarios}
+              error={errorUsuarios}
+              sx={{ mb: 3 }} // Añadir margen inferior
+            />
+            <TextField
+              fullWidth
+              label="Tiempo (HH:MM:SS.SSS)"
+              value={tiempo}
+              onChange={(e) => setTiempo(e.target.value)}
+              placeholder="00:00:00.000"
+              sx={{ mb: 3 }} // Añadir margen inferior
+            />
+            <Button type="submit" variant="contained" color="primary">
+              Registrar
+            </Button>
+          </>
+        )}
+      </Box>
+      <TablaTiempos />
     </Box>
   );
 };

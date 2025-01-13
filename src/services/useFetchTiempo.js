@@ -6,24 +6,23 @@ const useFetchTiempo = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  const fetchTiempos = async () => {
-    setLoading(true);
-    try {
-      const response = await axios.get("/registrotiempo");
-      setTiempos(response.data);
-      setError(null);
-    } catch (err) {
-      setError("Error al obtener los registros de tiempo.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
   useEffect(() => {
+    const fetchTiempos = async () => {
+      try {
+        const response = await axios.get("/registrotiempo");
+        setTiempos(response.data);
+        setError(null);
+      } catch (err) {
+        setError("Error al obtener los registros de tiempo.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
     fetchTiempos();
   }, []);
 
-  return { tiempos, loading, error, setTiempos, fetchTiempos };
+  return { tiempos, loading, error };
 };
 
 export default useFetchTiempo;
